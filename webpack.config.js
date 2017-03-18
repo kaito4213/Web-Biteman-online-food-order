@@ -7,7 +7,8 @@ module.exports = {
     'react-hot-loader/patch',
     'webpack-dev-server/client?http://localhost:3000',
     'webpack/hot/only-dev-server',
-    './src/index'
+    './src/index',
+    './src/css/custom'
   ],
   output: {
     path: path.join(__dirname, 'dist'),

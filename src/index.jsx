@@ -20,7 +20,7 @@ if (module.hot) {
 
     render(
       <AppContainer>
-        <NextApp appState={appState} />
+        <NextApp/>
       </AppContainer>,
       document.getElementById('root')
     );

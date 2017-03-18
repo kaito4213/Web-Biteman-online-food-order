@@ -1,8 +1,16 @@
 import React, { Component } from 'react';
-
+import Home from './Home';
+import Header from './Header';
+import Footer from './Footer';
 class App extends Component {
   render() {
-    return (<p>Hello</p>)
+    return (
+      <div>
+        <Header/>
+        <Home/>
+        <Footer/>
+      </div>
+    )
   }
 };
 
