@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 //import {Jumbotron, FlatButton, Image, Nav, NavItem, Grid, Row, Col} from 'react-bootstrap';
 import {Link} from 'react-router';
+import Login from './Login';
 
 class Home extends Component {
   render() {
@@ -12,9 +13,12 @@ class Home extends Component {
           <a href="http://www.nba.com"> Biteman </a>
           sample application.
         </h2>
+        <Login/>
         <Link to="/Signup" className="btn btn-lg btn-primary">
           Sign up now
         </Link>
+
+        {this.props.children}
       </div>
     )
   }
