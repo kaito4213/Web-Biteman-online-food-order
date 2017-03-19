@@ -15,7 +15,7 @@ class App extends Component {
     return (
       <div>
         <Header/>
-        <div style={testStyle}>
+        <div>
           {/*Render the body based on different route*/}
           {this.props.children}
         </div>

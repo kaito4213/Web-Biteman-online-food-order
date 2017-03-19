@@ -23,6 +23,13 @@ class Login extends React.Component {
     const password = this.inputPassword.value;
 
     console.log(userEmail + '  ' + password);
+
+    // if logged in
+    if (password == 'asd') {
+      // https://github.com/reactjs/react-router-tutorial/tree/master/lessons/12-navigating
+      this.context.router.replace('/home');
+      localStorage.setItem('userName', userEmail);
+    }
   }
 
   render() {
@@ -49,6 +56,10 @@ class Login extends React.Component {
   }
 
 }
+
+Login.contextTypes = {
+  router: React.PropTypes.object.isRequired
+};
 
 export default Login;
 

@@ -2,9 +2,7 @@ import React from 'react';
 
 const HelloWorld = ({name}) => {
     const sayHi = (event) => {
-        localStorage.setItem('username', 'jie');
-        alert(`Hi ${name}!` + localStorage.getItem('username'));
-
+        alert(`Hi ` + localStorage.getItem('userName') + `!`);
     };
 
     return (
