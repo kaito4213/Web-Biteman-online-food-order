@@ -1,9 +1,15 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router';
+import React, {Component} from 'react';
+import {Link} from 'react-router';
 
+/**
+ * Footer component.
+ *
+ * @param props
+ * @returns {XML}
+ * @constructor
+ */
 const Footer = (props) => {
-
-  return(
+  return (
     <div>
       <footer className="footer">
         <small>

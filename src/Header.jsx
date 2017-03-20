@@ -1,12 +1,17 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router';
+import React, {Component} from 'react';
+import {Link} from 'react-router';
 
+/**
+ * Header.
+ *
+ * @todo: convert this to a stateless function
+ */
 class Header extends React.Component {
 
   handleLogout = (event) => {
     this.context.router.replace('/home');
     localStorage.removeItem('userName');
-  }
+  };
 
   render() {
 
@@ -33,7 +38,7 @@ class Header extends React.Component {
         </header>
       </div>
     );
-  }
+  };
 
 }
 

@@ -6,18 +6,20 @@ import App from './App';
 import HelloWorld from './HelloWorld';
 import Login from './Login';
 import Home from './Home';
+import Help from './Help';
 
-// config react-router here
+// config the router here
 render(
   <AppContainer>
     <Router history={browserHistory}>
       <Route path='/' component={App}>
+        {/*All of the componets here will be rendered as children*/}
         {/*Hello World is just an example component*/}
         <Route path="/hello-world" component={HelloWorld}/>
         <Route path="/signup" component={HelloWorld}/>
         <Route path='/login' component={Login}/>
         <Route path='/home' component={Home}/>
-        <Route path='/help' component={HelloWorld}/>
+        <Route path='/help' component={Help}/>
       </Route>
     </Router>
   </AppContainer>,

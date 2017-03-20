@@ -3,15 +3,14 @@ import React from 'react';
 /**
  * Login page.
  *
- * @todo: convert this to stateless function
+ * @todo: convert this to a stateless function
  */
-
 class Login extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {error: true};
-  }
+  };
 
   /**
    * Submit username and password
@@ -30,7 +29,7 @@ class Login extends React.Component {
       this.context.router.replace('/home');
       localStorage.setItem('userName', userEmail);
     }
-  }
+  };
 
   render() {
     return (
@@ -53,7 +52,7 @@ class Login extends React.Component {
         </form>
       </div>
     )
-  }
+  };
 
 }
 
