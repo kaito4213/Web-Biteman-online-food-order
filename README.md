@@ -1,5 +1,5 @@
 # biteman-online-food-order
-This is cs542 project in WPI aimed at implementing an online food order system.
+
 
 ### Notice: 
 1. I found github online editor is broken... So I will style this read.me later.
