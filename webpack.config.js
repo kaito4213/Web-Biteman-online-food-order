@@ -2,34 +2,32 @@ var path = require('path');
 var webpack = require('webpack');
 
 module.exports = {
-  devtool: 'eval',
   entry: [
-    'react-hot-loader/patch',
-    'webpack-dev-server/client?http://localhost:3000',
-    'webpack/hot/only-dev-server',
+    // 'react-hot-loader/patch',
+    // 'webpack-dev-server/client?http://localhost:3000',
+    // 'webpack/hot/only-dev-server',
     './src/index',
     './src/css/custom'
   ],
   output: {
-    path: path.join(__dirname, 'dist'),
-    filename: 'bundle.js',
-    publicPath: '/static/'
+    path: path.join(__dirname, 'public') + '/static',
+    filename: 'bundle.js'
   },
-  plugins: [
-    new webpack.HotModuleReplacementPlugin()
-  ],
+  // plugins: [
+  //   new webpack.HotModuleReplacementPlugin()
+  // ],
   resolve: {
-    extensions: ['', '.js', '.jsx', '.scss', 'jpg']
+    extensions: ['.js', '.jsx', '.scss', 'jpg']
   },
   module: {
-    loaders: [{
+    rules: [{
       test: /\.jsx?$/,
-      loaders: ['babel'],
+      loader: 'babel-loader',
       include: path.join(__dirname, 'src')
     },
       {
         test: /\.scss$/,
-        loader: "style!css!sass"
+        use: [{loader: "style-loader"}, {loader: "css-loader"} ,{loader: "sass-loader"}]
       },
       {
         test: /\.(jpg|png|svg)$/,
