@@ -7,6 +7,7 @@ import HelloWorld from './HelloWorld';
 import Login from './Login';
 import Home from './Home';
 import Help from './Help';
+import Jiaoyan from './Jiaoyan';
 
 // config the router here
 render(
@@ -20,6 +21,7 @@ render(
         <Route path='/login' component={Login}/>
         <Route path='/home' component={Home}/>
         <Route path='/help' component={Help}/>
+        <Route path='/jiaoyan' component={Jiaoyan}/>
       </Route>
     </Router>
   </AppContainer>,
