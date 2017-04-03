@@ -18,7 +18,6 @@ class Menu extends React.Component {
             <div>
               <h1>The Menu</h1>
               <MenuTable menu = {MENU}/>
-                /*Todo: Add button switch to MyOrder Page*/
             </div>
         )
     }
@@ -58,7 +57,6 @@ class CuisionRow extends React.Component {
         )
     }
 }
-
 
 
 export default Menu;

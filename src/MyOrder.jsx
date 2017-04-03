@@ -12,11 +12,29 @@ var ORDER = [
 var totalPrice = 0
 
 class MyOrder extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {order: {ORDER}}
+        //this.handleClick = this.handleClick.bind(this)
+    }
+
+    handleClick(e) {
+        var newOrder = []
+        this.state.order.forEach(function(row) {
+            if(row.oid != e.target.value){
+               newOrder.push(row)
+            }
+
+            this.setState({order: {newOrder}})
+        })
+
+    }
+
     render() {
         return (
             <div>
                 <h1>MY Order</h1>
-                <OrderTable order = {ORDER} />
+                <OrderTable order = {this.state.order} />
             </div>
 
         )
@@ -45,7 +63,8 @@ class OrderRow extends React.Component {
                 <div>
                     <h3>{this.props.order.dname}
                         <span> {this.props.order.price}</span>
-                        <button type="button" >delete</button>
+                        <button type="button" onClick = {this.handleClick}
+                                value = {this.props.order.id}>delete</button>
                     </h3>
                 </div>
                 <hr></hr>
