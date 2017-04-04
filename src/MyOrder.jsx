@@ -47,17 +47,14 @@ class MyOrder extends React.Component {
 class OrderTable extends React.Component {
 
   constructor(props) {
+    debugger;
     super(props);
-  }
-
-  deleteOrder(orderId) {
-    this.props.deleteOrder(orderId);
   }
 
   render() {
     let orderRow = [];
     this.props.order.forEach(function (order) {
-      orderRow.push(<OrderRow order={order} key={order.oid} deleteOrder={this.deleteOrder.bind(this)}/>)
+      orderRow.push(<OrderRow order={order} key={order.oid} deleteOrder={this.props.deleteOrder.bind(this)}/>)
     }.bind(this));
 
     return (
@@ -70,6 +67,7 @@ class OrderTable extends React.Component {
 class OrderRow extends React.Component {
 
   constructor(props) {
+    console.log(props);
     super(props);
   }
 
