@@ -7,8 +7,12 @@ import HelloWorld from './HelloWorld';
 import Login from './Login';
 import Home from './Home';
 import Help from './Help';
+
 import CustMenu from './CustMenu';
 import MyOrder from './MyOrder';
+
+import signup from './signup';
+
 
 // config the router here
 render(
@@ -18,7 +22,7 @@ render(
         {/*All of the componets here will be rendered as children*/}
         {/*Hello World is just an example component*/}
         <Route path="/hello-world" component={HelloWorld}/>
-        <Route path="/signup" component={HelloWorld}/>
+        <Route path="/signup" component={signup}/>
         <Route path='/login' component={Login}/>
         <Route path='/home' component={Home}/>
         <Route path='/help' component={Help}/>

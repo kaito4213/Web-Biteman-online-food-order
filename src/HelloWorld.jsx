@@ -14,7 +14,7 @@ const HelloWorld = ({name}) => {
 
   return (
     <div>
-      <a href="#" onClick={sayHi}>Say Hi</a>
+      <a href="#" onClick={sayHi}>Say hi</a>
     </div>
   );
 };
