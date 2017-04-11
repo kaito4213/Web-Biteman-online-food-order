@@ -1,6 +1,6 @@
 import React from 'react';
 
-var ORDER = [
+let order = [
     {oid: '1', rid: '1', price: '$49.99', quantity: '1', dname: 'Pad Thai'},
     {oid: '2', rid: '1', price: '$49.99', quantity: '1', dname: 'crab rangoon'},
     {oid: '3', rid: '1', price: '$49.99', quantity: '1', dname: 'downpling'},
@@ -9,24 +9,24 @@ var ORDER = [
     {oid: '6', rid: '1', price: '$49.99', quantity: '1', dname: 'chicken wings'}
 ];
 
-var totalPrice = 0
+let totalPrice = 0;
 
 class MyOrder extends React.Component {
     constructor(props) {
-        super(props)
-        this.state = {order: {ORDER}}
-        //this.handleClick = this.handleClick.bind(this)
+        super(props);
+        this.state = {order: order};
     }
 
-    handleClick(e) {
-        var newOrder = []
-        this.state.order.forEach(function(row) {
-            if(row.oid != e.target.value){
-               newOrder.push(row)
+    deleteOrder(orderId) {
+        debugger;
+        let order = [];
+        this.state.order.forEach(function (row) {
+            if (row.oid != orderId) {
+                order.push(row);
             }
 
-            this.setState({order: {newOrder}})
-        })
+            this.setState({order});
+        }.bind(this))
 
     }
 
@@ -34,7 +34,9 @@ class MyOrder extends React.Component {
         return (
             <div>
                 <h1>MY Order</h1>
-                <OrderTable order = {this.state.order} />
+                <table>
+                    <OrderTable order={this.state.order} deleteOrder={this.deleteOrder.bind(this)}/>
+                </table>
             </div>
 
         )
@@ -43,13 +45,19 @@ class MyOrder extends React.Component {
 
 //define info in each order row shown on webpage
 class OrderTable extends React.Component {
-    render() {
-        var orderRow = []
-        this.props.order.forEach(function(order) {
-            orderRow.push(<OrderRow order={order} key = {order.oid} />)
-        })
 
-        return(
+    constructor(props) {
+        debugger;
+        super(props);
+    }
+
+    render() {
+        let orderRow = [];
+        this.props.order.forEach(function (order) {
+            orderRow.push(<OrderRow order={order} key={order.oid} deleteOrder={this.props.deleteOrder.bind(this)}/>)
+        }.bind(this));
+
+        return (
             <tbody>{orderRow}</tbody>
         )
     }
@@ -57,18 +65,28 @@ class OrderTable extends React.Component {
 
 //
 class OrderRow extends React.Component {
+
+    constructor(props) {
+        console.log(props);
+        super(props);
+    }
+
+    handleDeleteOrder(e) {
+        let orderId = e.target.value;
+        this.props.deleteOrder(orderId);
+    }
+
     render() {
-        return(
-            <div>
-                <div>
+        return (
+            <tr>
+                <td>
                     <h3>{this.props.order.dname}
                         <span> {this.props.order.price}</span>
-                        <button type="button" onClick = {this.handleClick}
-                                value = {this.props.order.id}>delete</button>
+                        <button type="button" value={this.props.order.oid} onClick={this.handleDeleteOrder.bind(this)}>Delete
+                        </button>
                     </h3>
-                </div>
-                <hr></hr>
-            </div>
+                </td>
+            </tr>
         )
     }
 }

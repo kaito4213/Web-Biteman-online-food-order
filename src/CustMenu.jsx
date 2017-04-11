@@ -12,7 +12,7 @@ var MENU = [
     {did: '6', rid: '1', price: '$49.99',  dname: 'chicken wings', discription: 'Chicken, and shrimp; stir-fried with rice noodles, egg, scallions, bean sprouts, and ground peanuts.'}
 ];
 /*this is the parent of menu page*/
-class Menu extends React.Component {
+class CustMenu extends React.Component {
     render() {
         return (
             <div>
@@ -59,5 +59,5 @@ class CuisionRow extends React.Component {
 }
 
 
-export default Menu;
+export default CustMenu;
 

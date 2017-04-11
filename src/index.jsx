@@ -7,7 +7,7 @@ import HelloWorld from './HelloWorld';
 import Login from './Login';
 import Home from './Home';
 import Help from './Help';
-import Menu from './Menu';
+import CustMenu from './CustMenu';
 import MyOrder from './MyOrder';
 
 // config the router here
@@ -22,7 +22,7 @@ render(
         <Route path='/login' component={Login}/>
         <Route path='/home' component={Home}/>
         <Route path='/help' component={Help}/>
-        <Route path='/menu' component={Menu}/>
+        <Route path='/custmenu' component={CustMenu}/>
         <Route path='/myOrder' component={MyOrder} />
       </Route>
     </Router>
