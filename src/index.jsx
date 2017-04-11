@@ -7,6 +7,8 @@ import HelloWorld from './HelloWorld';
 import Login from './Login';
 import Home from './Home';
 import Help from './Help';
+import CustMenu from './CustMenu';
+import MyOrder from './MyOrder';
 
 // config the router here
 render(
@@ -20,6 +22,8 @@ render(
         <Route path='/login' component={Login}/>
         <Route path='/home' component={Home}/>
         <Route path='/help' component={Help}/>
+        <Route path='/custmenu' component={CustMenu}/>
+        <Route path='/myOrder' component={MyOrder} />
       </Route>
     </Router>
   </AppContainer>,
