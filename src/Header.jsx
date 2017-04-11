@@ -37,10 +37,14 @@ class Header extends React.Component {
                 <li><Link to="/res">Restaurant</Link></li>
                 <li><Link to="/help">Help</Link></li>
 
+
                 <li><Link to="/custmenu">CustMenu</Link></li>
                 <li><Link to="/myOrder">MyOrder</Link></li>
-
+                  <li><Link to="/menu">Menu</Link></li>
 	    					{userpage}
+
+
+
 
                 {header}
               </ul>

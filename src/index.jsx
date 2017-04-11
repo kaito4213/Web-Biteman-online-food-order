@@ -7,6 +7,7 @@ import HelloWorld from './HelloWorld';
 import Login from './Login';
 import Home from './Home';
 import Help from './Help';
+
 import User from './User';
 import Orderlist from './Orderlist';
 import Profile from './Profile';
@@ -18,6 +19,9 @@ import CustMenu from './CustMenu';
 import MyOrder from './MyOrder';
 
 import signup from './signup';
+
+
+import Menu from './Menu';
 
 
 // config the router here
@@ -44,6 +48,9 @@ render(
 					<Route path='reslist' component={Reslist}/>
 					<Route path='reclist' component={Reclist}/>
         </Route>
+
+        <Route path='/menu' component={Menu}/>
+
       </Route>
     </Router>
   </AppContainer>,
@@ -62,3 +69,4 @@ if (module.hot) {
     );
   });
 }
+
