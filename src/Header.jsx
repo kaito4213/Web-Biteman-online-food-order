@@ -16,11 +16,15 @@ class Header extends React.Component {
   render() {
 
     let header = null;
+    let userpage = null;
 
     if (localStorage.getItem('userName')) {
       header = <li><a onClick={this.handleLogout}>Log out</a></li>
+      	userpage = <li><Link to="/user">User</Link></li>
+      /*make the userpage only visible after login*/
     } else {
       header = <li><Link to="/login">Log in</Link></li>
+	userpage = <li></li>
     }
 
     return (
@@ -30,9 +34,14 @@ class Header extends React.Component {
             <nav>
               <ul className="nav navbar-nav navbar-right">
                 <li><Link to="/home">Home</Link></li>
+                <li><Link to="/res">Restaurant</Link></li>
                 <li><Link to="/help">Help</Link></li>
+
                 <li><Link to="/custmenu">CustMenu</Link></li>
                 <li><Link to="/myOrder">MyOrder</Link></li>
+
+	    					{userpage}
+
                 {header}
               </ul>
             </nav>

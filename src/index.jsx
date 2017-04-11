@@ -7,6 +7,12 @@ import HelloWorld from './HelloWorld';
 import Login from './Login';
 import Home from './Home';
 import Help from './Help';
+import User from './User';
+import Orderlist from './Orderlist';
+import Profile from './Profile';
+import Reslist from './Reslist';
+import Reclist from './Reclist';
+import Res from './Res';
 
 import CustMenu from './CustMenu';
 import MyOrder from './MyOrder';
@@ -26,8 +32,18 @@ render(
         <Route path='/login' component={Login}/>
         <Route path='/home' component={Home}/>
         <Route path='/help' component={Help}/>
+
         <Route path='/custmenu' component={CustMenu}/>
         <Route path='/myOrder' component={MyOrder} />
+
+        <Route path='user' component={User}>
+          <Route path='orderlist' component={Orderlist}/>
+		  <Route path='profile' component={Profile}/>
+        </Route>
+        <Route path='res' component={Res}>
+					<Route path='reslist' component={Reslist}/>
+					<Route path='reclist' component={Reclist}/>
+        </Route>
       </Route>
     </Router>
   </AppContainer>,

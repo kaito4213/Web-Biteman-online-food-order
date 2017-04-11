@@ -46,6 +46,7 @@ p {
   line-height: 1.7em;
 }
 
+
 footer {
   margin-top: 45px;
   padding-top: 5px;
@@ -67,5 +68,22 @@ footer {
       float: left;
       margin-left: 15px;
     }
-  }
+  }	
 }
+
+/*For User page*/
+#usidebar {
+ 	float: left;
+	margin: 2% 5%;
+	width: 10%;
+	color: white;
+	background-color: darkgrey;
+}
+#utable {
+	margin-left:20%;
+	width:70%;
+	border: 1px solid black;
+	height: 800px;
+}
+
+
