@@ -1,6 +1,7 @@
 import React from 'react';
 
 let order = [
+
     {oid: '1', rid: '1', price: '$49.99', quantity: '1', dname: 'Pad Thai'},
     {oid: '2', rid: '1', price: '$49.99', quantity: '1', dname: 'crab rangoon'},
     {oid: '3', rid: '1', price: '$49.99', quantity: '1', dname: 'downpling'},
@@ -12,6 +13,7 @@ let order = [
 let totalPrice = 0;
 
 class MyOrder extends React.Component {
+
     constructor(props) {
         super(props);
         this.state = {order: order};
@@ -46,49 +48,51 @@ class MyOrder extends React.Component {
 //define info in each order row shown on webpage
 class OrderTable extends React.Component {
 
-    constructor(props) {
-        debugger;
-        super(props);
-    }
 
-    render() {
-        let orderRow = [];
-        this.props.order.forEach(function (order) {
-            orderRow.push(<OrderRow order={order} key={order.oid} deleteOrder={this.props.deleteOrder.bind(this)}/>)
-        }.bind(this));
+  constructor(props) {
+    debugger;
+    super(props);
+  }
 
-        return (
-            <tbody>{orderRow}</tbody>
-        )
-    }
+  render() {
+    let orderRow = [];
+    this.props.order.forEach(function (order) {
+      orderRow.push(<OrderRow order={order} key={order.oid} deleteOrder={this.props.deleteOrder.bind(this)}/>)
+    }.bind(this));
+
+    return (
+      <tbody>{orderRow}</tbody>
+    )
+  }
+
 }
 
 //
 class OrderRow extends React.Component {
 
-    constructor(props) {
-        console.log(props);
-        super(props);
-    }
+  constructor(props) {
+    console.log(props);
+    super(props);
+  }
 
-    handleDeleteOrder(e) {
-        let orderId = e.target.value;
-        this.props.deleteOrder(orderId);
-    }
+  handleDeleteOrder(e) {
+    let orderId = e.target.value;
+    this.props.deleteOrder(orderId);
+  }
 
-    render() {
-        return (
-            <tr>
-                <td>
-                    <h3>{this.props.order.dname}
-                        <span> {this.props.order.price}</span>
-                        <button type="button" value={this.props.order.oid} onClick={this.handleDeleteOrder.bind(this)}>Delete
-                        </button>
-                    </h3>
-                </td>
-            </tr>
-        )
-    }
+  render() {
+    return (
+      <tr>
+        <td>
+          <h3>{this.props.order.dname}
+            <span> {this.props.order.price}</span>
+            <button type="button" value={this.props.order.oid} onClick={this.handleDeleteOrder.bind(this)}>Delete
+            </button>
+          </h3>
+        </td>
+      </tr>
+    )
+  }
 }
 
 export default MyOrder;
