@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "description": "Web project for CS 542",
   "scripts": {
-    "start": "node server.js",
+    "start": "webpack --config webpack.config.js && node server.js",
+    "build": "webpack --config webpack.config.js",
     "lint": "eslint src"
   },
   "repository": {
@@ -41,6 +42,8 @@
   },
   "dependencies": {
     "bootstrap": "^3.3.7",
+    "express": "^4.15.2",
+    "body-parser": "^1.15.0",
     "mobx": "^3.0.0",
     "mobx-react": "^4.1.0",
     "mobx-react-devtools": "^4.2.11",
