@@ -15,7 +15,7 @@ const pool = mysql.createPool({
  */
 module.exports = {
 
-  // search
+  // query
   getData: function (preparedSql, arr, cb) {
     pool.getConnection(function (err, conn) {
       if (err) console.log("POOL " + err);
@@ -27,6 +27,7 @@ module.exports = {
     });
   },
 
+  // update
   updateData: function (preparedSql, arr, cb) {
     pool.getConnection(function (err, conn) {
       if (err) console.log("POOL " + err);
@@ -36,9 +37,9 @@ module.exports = {
         conn.release();
       });
     });
-
   },
 
+  // insert
   insertData: function (preparedSql, arr, cb) {
     pool.getConnection(function (err, conn) {
       if (err) console.log("POOL" + err);

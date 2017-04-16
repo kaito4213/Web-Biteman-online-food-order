@@ -2,47 +2,64 @@ import React from 'react';
 
 let order = [
 
-    {oid: '1', rid: '1', price: '$49.99', quantity: '1', dname: 'Pad Thai'},
-    {oid: '2', rid: '1', price: '$49.99', quantity: '1', dname: 'crab rangoon'},
-    {oid: '3', rid: '1', price: '$49.99', quantity: '1', dname: 'downpling'},
-    {oid: '4', rid: '1', price: '$49.99', quantity: '1', dname: 'noodle'},
-    {oid: '5', rid: '1', price: '$49.99', quantity: '1', dname: 'fried rice'},
-    {oid: '6', rid: '1', price: '$49.99', quantity: '1', dname: 'chicken wings'}
+  {oid: '1', rid: '1', price: '$49.99', quantity: '1', dname: 'Pad Thai'},
+  {oid: '2', rid: '1', price: '$49.99', quantity: '1', dname: 'crab rangoon'},
+  {oid: '3', rid: '1', price: '$49.99', quantity: '1', dname: 'downpling'},
+  {oid: '4', rid: '1', price: '$49.99', quantity: '1', dname: 'noodle'},
+  {oid: '5', rid: '1', price: '$49.99', quantity: '1', dname: 'fried rice'},
+  {oid: '6', rid: '1', price: '$49.99', quantity: '1', dname: 'chicken wings'}
 ];
 
 let totalPrice = 0;
 
 class MyOrder extends React.Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {order: order};
-    }
+  constructor(props) {
+    super(props);
+    this.state = {order: order};
+  }
 
-    deleteOrder(orderId) {
+  deleteOrder(orderId) {
+
+    console.log('clicked delete');
+
+    // if we want to delete data, we can use post
+    $.ajax({
+      url: '/myOrders',
+      type: 'get',
+      dataType: 'json',
+      success: function (json) {
+        console.log(json);
+        // this.setState();
+      }.bind(this),
+      error: function (xhr, status, err) {
         debugger;
-        let order = [];
-        this.state.order.forEach(function (row) {
-            if (row.oid != orderId) {
-                order.push(row);
-            }
+        console.log(xhr.responseText);
+        console.log(err);
+      }.bind(this)
+    });
 
-            this.setState({order});
-        }.bind(this))
+    let order = [];
+    this.state.order.forEach(function (row) {
+      if (row.oid != orderId) {
+        order.push(row);
+      }
+      this.setState({order});
+    }.bind(this));
 
-    }
+  }
 
-    render() {
-        return (
-            <div>
-                <h1>MY Order</h1>
-                <table>
-                    <OrderTable order={this.state.order} deleteOrder={this.deleteOrder.bind(this)}/>
-                </table>
-            </div>
+  render() {
+    return (
+      <div>
+        <h1>MY Order</h1>
+        <table>
+          <OrderTable order={this.state.order} deleteOrder={this.deleteOrder.bind(this)}/>
+        </table>
+      </div>
 
-        )
-    }
+    )
+  }
 }
 
 //define info in each order row shown on webpage
