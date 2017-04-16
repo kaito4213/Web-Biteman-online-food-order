@@ -1,6 +1,7 @@
 // var webpack = require('webpack');
 // var WebpackDevServer = require('webpack-dev-server');
 var config = require('./webpack.config');
+const DBConnections = require('./src/db/DBConnection.js');
 //
 // new WebpackDevServer(webpack(config), {
 //   publicPath: config.output.publicPath,
@@ -28,6 +29,13 @@ app.get('*', function (req, res) {
 var port = 3000;
 
 
-app.listen(port, function() {
+app.listen(port, function () {
+
+  function cb(data) {
+    console.log(data);
+  }
+
+  DBConnections.getData('SELECT * FROM cs542_project1.food_tbl', [], cb);
+
   console.log('listening on port: ' + port);
 });
