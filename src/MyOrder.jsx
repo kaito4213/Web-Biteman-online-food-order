@@ -1,7 +1,6 @@
 import React from 'react';
 
 let order = [
-
   {oid: '1', rid: '1', price: '$49.99', quantity: '1', dname: 'Pad Thai'},
   {oid: '2', rid: '1', price: '$49.99', quantity: '1', dname: 'crab rangoon'},
   {oid: '3', rid: '1', price: '$49.99', quantity: '1', dname: 'downpling'},

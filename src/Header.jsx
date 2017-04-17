@@ -21,13 +21,13 @@ class Header extends React.Component {
 
     if (!localStorage.getItem('userName')) {
       header = <li><Link to="/login">Log in</Link></li>
-			userpage = <li></li>
+      userpage = <li></li>
     } else {
-			if (localStorage.getItem('type')=='customer'){
-				userpage = <li><Link to="/user">My Orders</Link></li>
-			}else {
-				userpage = <li><Link to="/menu">My Restuarant</Link></li>
-			}
+      if (localStorage.getItem('type') == 'customer') {
+        userpage = <li><Link to="/user">My Orders</Link></li>
+      } else {
+        userpage = <li><Link to="/menu">My Restuarant</Link></li>
+      }
       header = <li><a onClick={this.handleLogout}>Log out</a></li>
     }
 
@@ -39,7 +39,7 @@ class Header extends React.Component {
               <ul className="nav navbar-nav navbar-right">
                 <li><Link to="/home">Home</Link></li>
                 <li><Link to="/res">Restaurant</Link></li>
-	    					{userpage}
+                {userpage}
                 {header}
               </ul>
             </nav>

@@ -10,8 +10,9 @@ class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-			error: false,
-			type: 'customer'};
+      error: false,
+      type: 'customer'
+    };
   };
 
   /**
@@ -32,13 +33,13 @@ class Login extends React.Component {
       localStorage.setItem('userName', userEmail);
       localStorage.setItem('type', this.state.type);
     }
-		else {
-			this.setState({error:true});
-		}
+    else {
+      this.setState({error: true});
+    }
   };
 
   handleSelect(event) {
-		this.setState({type: event.target.value});
+    this.setState({type: event.target.value});
   };
 
   render() {
@@ -46,10 +47,10 @@ class Login extends React.Component {
       <div>
         <form onSubmit={this.handleSubmit.bind(this)}>
           <h2>Log In</h2>
-					<div><select value={this.state.type} onChange={this.handleSelect.bind(this)}>
-						<option value='customer'>Customer</option>
-						<option value='restuarant'>Restuarant</option>
-					</select></div>
+          <div><select value={this.state.type} onChange={this.handleSelect.bind(this)}>
+            <option value='customer'>Customer</option>
+            <option value='restuarant'>Restuarant</option>
+          </select></div>
           <div><input ref={(input) => {
             this.inputUsername = input
           }} type="text" placeholder="Email Address"/></div>
@@ -57,7 +58,9 @@ class Login extends React.Component {
             this.inputPassword = input
           }} type="password" placeholder="Password" required/></div>
           <div><input type="checkbox"/>Remember me</div>
-          <div><button type="submit">Login</button></div>
+          <div>
+            <button type="submit">Login</button>
+          </div>
           <div>
             {this.state.error && (
               <h2>Either password or account is wrong!</h2>

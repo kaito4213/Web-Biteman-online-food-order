@@ -1,12 +1,13 @@
 import React from 'react';
 
-//NOT USE NOW
 /**
  * HelloWorld is just a place holder component.
  *
  * @param name
  * @returns {XML}
  * @constructor
+ *
+ * @todo: remove this
  */
 const HelloWorld = ({name}) => {
   const sayHi = (event) => {

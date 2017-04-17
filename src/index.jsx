@@ -23,7 +23,6 @@ import signup from './signup';
 
 import Menu from './Menu';
 
-
 // config the router here
 render(
   <AppContainer>
@@ -40,12 +39,12 @@ render(
         <Route path='/custmenu/:rid' component={CustMenu}/>
         <Route path='user' component={User}>
           <Route path='orderlist' component={Orderlist}/>
-		  		<Route path='profile' component={Profile}/>
-        	<Route path='myOrder' component={MyOrder} />
+          <Route path='profile' component={Profile}/>
+          <Route path='myOrder' component={MyOrder}/>
         </Route>
         <Route path='res' component={Res}>
-					<Route path='reslist' component={Reslist}/>
-					<Route path='reclist' component={Reclist}/>
+          <Route path='reslist' component={Reslist}/>
+          <Route path='reclist' component={Reclist}/>
         </Route>
 
         <Route path='/menu' component={Menu}/>
