@@ -13,29 +13,31 @@ class Home extends Component {
     };
 
     render() {
+				let content 
         if (!localStorage.getItem('userName')) {
+					content = <div><Login/><button onClick={this.handleClick.bind(this)} type="button">ign up now</button></div>
+				}else {
+					let type = localStorage.getItem('type');
+					if (type=='customer'){
+						content = <p>Feeling Hungry? Order Now!</p>
+					}else {
+						content = <p>We are here to help you be successful.</p>
+					}
+				}
         return (
             <div className="center jumbotron">
-            <h1>Welcome to Biteman! You are not logged in!</h1>
+            <h1>Welcome to Biteman!</h1>
             <h2>
                 This is the home page for the
                 <a href="http://www.nba.com"> Biteman </a>
                 sample application.
             </h2>
-            <Login/>
-            <button onClick={this.handleClick.bind(this)} type="button">
-                Sign up now
-            </button>
+						{content}
             </div>
         )
-        } else {
-        // successfully logged in
-        return (
-            <HelloWorld name={localStorage.getItem('userName')}/>
-        )
-        }
-    }
+		} 
 }
+
 
 
 Home.contextTypes = {

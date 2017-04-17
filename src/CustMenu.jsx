@@ -16,6 +16,7 @@ class CustMenu extends React.Component {
     render() {
         return (
             <div>
+							<h1>{this.props.params.rid}</h1>
               <h1>The Menu</h1>
               <MenuTable menu = {MENU}/>
             </div>

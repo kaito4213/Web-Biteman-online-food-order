@@ -9,7 +9,9 @@ class Login extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {error: true};
+    this.state = {
+			error: false,
+			type: 'customer'};
   };
 
   /**
@@ -28,22 +30,34 @@ class Login extends React.Component {
       // https://github.com/reactjs/react-router-tutorial/tree/master/lessons/12-navigating
       this.context.router.replace('/home');
       localStorage.setItem('userName', userEmail);
+      localStorage.setItem('type', this.state.type);
     }
+		else {
+			this.setState({error:true});
+		}
+  };
+
+  handleSelect(event) {
+		this.setState({type: event.target.value});
   };
 
   render() {
     return (
       <div>
         <form onSubmit={this.handleSubmit.bind(this)}>
-          <h2>Sign In</h2>
-          <input ref={(input) => {
+          <h2>Log In</h2>
+					<div><select value={this.state.type} onChange={this.handleSelect.bind(this)}>
+						<option value='customer'>Customer</option>
+						<option value='restuarant'>Restuarant</option>
+					</select></div>
+          <div><input ref={(input) => {
             this.inputUsername = input
-          }} type="text" placeholder="Email Address"/>
-          <input ref={(input) => {
+          }} type="text" placeholder="Email Address"/></div>
+          <div><input ref={(input) => {
             this.inputPassword = input
-          }} type="password" placeholder="Password" required/>
-          <input type="checkbox" label="Remember me"/>
-          <button type="submit">Login</button>
+          }} type="password" placeholder="Password" required/></div>
+          <div><input type="checkbox"/>Remember me</div>
+          <div><button type="submit">Login</button></div>
           <div>
             {this.state.error && (
               <h2>Either password or account is wrong!</h2>
@@ -61,4 +75,5 @@ Login.contextTypes = {
 };
 
 export default Login;
+
 

@@ -11,6 +11,7 @@ class Header extends React.Component {
   handleLogout = (event) => {
     this.context.router.replace('/home');
     localStorage.removeItem('userName');
+    localStorage.removeItem('type');
   };
 
   render() {
@@ -18,13 +19,16 @@ class Header extends React.Component {
     let header = null;
     let userpage = null;
 
-    if (localStorage.getItem('userName')) {
-      header = <li><a onClick={this.handleLogout}>Log out</a></li>
-      	userpage = <li><Link to="/user">User</Link></li>
-      /*make the userpage only visible after login*/
-    } else {
+    if (!localStorage.getItem('userName')) {
       header = <li><Link to="/login">Log in</Link></li>
-	userpage = <li></li>
+			userpage = <li></li>
+    } else {
+			if (localStorage.getItem('type')=='customer'){
+				userpage = <li><Link to="/user">My Orders</Link></li>
+			}else {
+				userpage = <li><Link to="/menu">My Restuarant</Link></li>
+			}
+      header = <li><a onClick={this.handleLogout}>Log out</a></li>
     }
 
     return (
@@ -35,17 +39,7 @@ class Header extends React.Component {
               <ul className="nav navbar-nav navbar-right">
                 <li><Link to="/home">Home</Link></li>
                 <li><Link to="/res">Restaurant</Link></li>
-                <li><Link to="/help">Help</Link></li>
-
-
-                <li><Link to="/custmenu">CustMenu</Link></li>
-                <li><Link to="/myOrder">MyOrder</Link></li>
-                  <li><Link to="/menu">Menu</Link></li>
 	    					{userpage}
-
-
-
-
                 {header}
               </ul>
             </nav>

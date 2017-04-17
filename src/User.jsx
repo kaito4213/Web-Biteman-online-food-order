@@ -13,18 +13,19 @@ import Home from './Home';
 
 class User extends Component {
   render() {
-    if (!localStorage.getItem('userName')){
+    if (!localStorage.getItem('userName')||!localStorage.getItem('type')=='customer'){
  	return(
 		<Home />
 	)
-    } else {// successfully logged in
+    } else {// successfully logged in as customer
       return (
-				<div className="user-page">
+				<div>
 					<div>
 						<ul id="usidebar">
 							<p>My account:</p>
 							<li><Link to ="/user/orderlist">Orders</Link></li>
 							<li><Link to ="/user/profile">Profile</Link></li>
+							<li><Link to ="/user/myOrder">Cart</Link></li>
 						</ul>
 					</div>					
 					<table id="utable">
@@ -35,5 +36,9 @@ class User extends Component {
     }
   }
 }
+
+User.contextTypes = {
+    router: React.PropTypes.object.isRequired
+};
 
 export default User;

@@ -11,34 +11,38 @@ import Reclist from './Reclist';
  */
 
 /* Page Layout
-	search bar + restaurant list + recommond
+	restaurant list + recommond
 */
 
 class Res extends Component {
-  	constructor() {
+  constructor() {
 		super();
 		this.state= {		};
+		this.handleClick= this.handleClick.bind(this);
+	}
+
+	handleClick(x){
+				let url = '/custmenu/'+x;
+        this.context.router.replace(url);
 	}
 
   render() {
-    if (!localStorage.getItem('userName')){
- 	return(
-		<Home />
-	)
-    } else {// successfully logged in
-      return (
-				<div className="res-page">			
-					<div>
-						<Reslist />
-					</div>
-					<div>
-						<h1>Recommond</h1>
-						<Reclist />
-					</div>
+    return (
+			<div className="res-page">			
+				<div>
+					<Reslist onClick={(e) =>this.handleClick(e)}/>
 				</div>
+				<div>
+					<h1>Recommond</h1>
+					<Reclist />
+				</div>
+			</div>
       )
-    }
   }
 }
+
+Res.contextTypes = {
+    router: React.PropTypes.object.isRequired
+};
 
 export default Res;
