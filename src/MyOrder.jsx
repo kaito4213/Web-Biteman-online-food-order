@@ -16,21 +16,47 @@ class MyOrder extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {order: order};
+    this.state = {order: [{oid: '', rid: '', price: '', quantity: '', dname: ''}]};
   }
 
-  deleteOrder(orderId) {
+  componentDidMount() {
+
+    // loading..... component
+
+    // request data
+    $.ajax({
+      url: '/getMyOrders',
+      type: 'get',
+      dataType: 'json',
+      success: function (json) {
+        console.log(json);
+        debugger;
+        this.setState({order: json.orderInfo})
+        ;
+      }.bind(this),
+
+
+      error: function (xhr, status, err) {
+        debugger;
+        console.log(xhr.responseText);
+        console.log(err);
+      }.bind(this)
+    });
+
+  }
+
+  deleteOrder(OID, DID) {
 
     console.log('clicked delete');
 
     // if we want to delete data, we can use post
     $.ajax({
-      url: '/myOrders',
-      type: 'get',
-      dataType: 'json',
+      url: '/deleteMyOrder',
+      type: 'post',
+      dataType: 'json', data: {orderId: OID, dishId: DID},
       success: function (json) {
         console.log(json);
-        // this.setState();
+        debugger;
       }.bind(this),
       error: function (xhr, status, err) {
         debugger;
@@ -39,13 +65,17 @@ class MyOrder extends React.Component {
       }.bind(this)
     });
 
+
     let order = [];
     this.state.order.forEach(function (row) {
-      if (row.oid != orderId) {
+
+      if (!(row.oid == OID && row.did == DID)) {
         order.push(row);
       }
-      this.setState({order});
+
     }.bind(this));
+
+    this.setState({order: order});
 
   }
 
@@ -65,16 +95,15 @@ class MyOrder extends React.Component {
 //define info in each order row shown on webpage
 class OrderTable extends React.Component {
 
-
   constructor(props) {
-    debugger;
     super(props);
   }
 
   render() {
     let orderRow = [];
+    let rowNum = 1;
     this.props.order.forEach(function (order) {
-      orderRow.push(<OrderRow order={order} key={order.oid} deleteOrder={this.props.deleteOrder.bind(this)}/>)
+      orderRow.push(<OrderRow order={order} key={rowNum++ } deleteOrder={this.props.deleteOrder.bind(this)}/>)
     }.bind(this));
 
     return (
@@ -93,8 +122,8 @@ class OrderRow extends React.Component {
   }
 
   handleDeleteOrder(e) {
-    let orderId = e.target.value;
-    this.props.deleteOrder(orderId);
+    //console.log(this.props.order.oid, this.props.order.did);
+    this.props.deleteOrder(this.props.order.oid, this.props.order.did);
   }
 
   render() {
@@ -103,7 +132,7 @@ class OrderRow extends React.Component {
         <td>
           <h3>{this.props.order.dname}
             <span> {this.props.order.price}</span>
-            <button type="button" value={this.props.order.oid} onClick={this.handleDeleteOrder.bind(this)}>Delete
+            <button type="button" value={this.props.key} onClick={this.handleDeleteOrder.bind(this)}>Delete
             </button>
           </h3>
         </td>
