@@ -20,5 +20,41 @@ function deleteCustomerOrder(orderId, dishId, cb) {
 
 }
 
+function getCustLoginInfo(email, cb) {
+
+  DBConnection.getData('SELECT pwd FROM customer WHERE email = ?;',[email], cb );
+}
+
+function getRestaurantLoginInfo(email, cb) {
+
+  DBConnection.getData('SELECT pwd FROM restaurant WHERE email = ?;',[email], cb );
+}
+
+function getRestaurantList(cb){
+
+  DBConnection.getData('SELECT name,rzipcode as zip,type, rid FROM restaurant;', [], cb );
+}
+
+function getMyProfile(cb){
+
+  DBConnection.getData('SELECT cname as uname, address, cID as uid FROM customer WHERE cID = 1;',[], cb);
+}
+
+function getRecommendationList(cb) {
+
+  DBConnection.getData('SELECT name,rzipcode as zip ,type FROM restaurant WHERE rID < 5;', [], cb);
+}
+
+function getMenuForCustomer(cb) {
+
+  DBConnection.getData('SELECT did, rid, dname, description, price FROM DISH WHERE rid = 1;', [], cb);
+}
+
 exports.getAllOrders = getAllOrders;
 exports.deleteCustomerOrder = deleteCustomerOrder;
+exports.getCustLoginInfo = getCustLoginInfo;
+exports.getRestaurantLoginInfo = getRestaurantLoginInfo;
+exports.getRestaurantList = getRestaurantList;
+exports.getMyProfile = getMyProfile;
+exports.getRecommendationList = getRecommendationList;
+exports.getMenuForCustomer = getMenuForCustomer;

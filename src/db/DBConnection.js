@@ -22,6 +22,7 @@ module.exports = {
       conn.query(preparedSql, arr, function (err, rows) {
         if (err) console.log(err);
         cb(rows);
+        console.log('dbconnection',rows);
         conn.release();
       });
     });

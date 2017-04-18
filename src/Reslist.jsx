@@ -11,6 +11,26 @@ import './css/antd.scss';
  * 2.link within one row(similar to Orderlist)
  */
 
+// get restaurant list from database
+var data = [];
+
+// request data
+$.ajax({
+  url: '/getRestaurantList',
+  type: 'get',
+  dataType: 'json',
+  success: function (json) {
+    console.log(json);
+    debugger;
+    data =  json.restaurantList;
+  }.bind(this),
+
+  error: function (xhr, status, err) {
+    debugger;
+    console.log(xhr.responseText);
+    console.log(err);
+  }.bind(this)
+});
 
 class ResRow extends Component {
   render() {
@@ -104,18 +124,6 @@ class FilterableProductTable extends Component {
       </div>
     );
   }
-}
-
-var data = [];
-
-for (let i = 0; i < 20; i++) {
-  data.push({
-    rid: i,
-    zip: i,
-    name: 'Pho' + i,
-    type: (i % 2) ? 'Asian' : 'French',
-    durl: i,
-  });
 }
 
 class Reslist extends Component {

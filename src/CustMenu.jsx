@@ -5,7 +5,7 @@ import React from 'react';
  *
  * @type {*[]}
  */
-var MENU = [
+/*var MENU = [
   {
     did: '1',
     rid: '1',
@@ -48,14 +48,36 @@ var MENU = [
     dname: 'chicken wings',
     discription: 'Chicken, and shrimp; stir-fried with rice noodles, egg, scallions, bean sprouts, and ground peanuts.'
   }
-];
+];*/
+let MENU = [];
+// request data
+$.ajax({
+  url: '/getMenuForCustomer',
+  type: 'get',
+  dataType: 'json',
+  success: function (json) {
+    console.log(json);
+    debugger;
+    MENU =  json.MenuForCustomer;
+  }.bind(this),
+
+  error: function (xhr, status, err) {
+    debugger;
+    console.log(xhr.responseText);
+    console.log(err);
+  }.bind(this)
+});
+
+
+
+
 /*this is the parent of menu page*/
 class CustMenu extends React.Component {
   render() {
     return (
       <div>
-        <h1>{this.props.params.rid}</h1>
-        <h1>The Menu</h1>
+        <h1>{this.props.params.name}</h1>
+        <h1>Menu</h1>
         <MenuTable menu={MENU}/>
       </div>
     )

@@ -23,6 +23,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(path.join(__dirname, 'public')));
 
+// delete myorder in cart according to the orderID and dishID
 app.post('/deleteMyOrder', function (req, res) {
   var orderId = req.body.orderId;
   var dishId = req.body.dishId;
@@ -38,12 +39,79 @@ app.post('/deleteMyOrder', function (req, res) {
 // endpoint to get all of the orders of a customer or merchant
 app.get('/getMyOrders', function (req, res) {
   function returnAllOrders(result) {
-    console.log(result);
+    //console.log(result);
     res.json({orderInfo: result});
   }
 
   // todo: should not pass req & res to DAO
   OrderDao.getAllOrders(req, res, returnAllOrders);
+});
+
+// get passord in order to check the user login
+app.post('/getLoginInfo', function (req, res) {
+
+    var inputEmail = req.body.email;
+    var table = req.body.table
+
+    function returnPwd(result) {
+      //console.log(result);
+      res.json({loginInfo: result});
+    }
+
+    if(table == 'customer')
+      OrderDao.getCustLoginInfo(inputEmail, returnPwd);
+    else
+      OrderDao.getRestaurantLoginInfo(inputEmail, returnPwd);
+  })
+
+//get all restaurant rows
+app.get('/getRestaurantList', function (req, res) {
+  function returnAllRestaurants(result) {
+    //console.log(result);
+    res.json({restaurantList: result});
+  }
+
+  OrderDao.getRestaurantList(returnAllRestaurants);
+});
+
+//get some restaurant rows
+app.get('/getRestaurantList', function (req, res) {
+  function returnAllRestaurants(result) {
+    //console.log(result);
+    res.json({restaurantList: result});
+  }
+
+  OrderDao.getRestaurantList(returnAllRestaurants);
+});
+
+//get personal information shown in profile page
+app.get('/getMyProfile', function (req, res) {
+  function returnMyProfile(result) {
+    //console.log(result);
+    res.json({profile: result});
+  }
+
+  OrderDao.getMyProfile(returnMyProfile);
+});
+
+//get recommend restaurant
+app.get('/getRecommendationList', function (req, res) {
+  function returnRecommendationList(result) {
+    //console.log(result);
+    res.json({recommendation: result});
+  }
+
+  OrderDao.getRecommendationList(returnRecommendationList);
+});
+
+//get restaurant menu for customer to choose
+app.get('/getMenuForCustomer', function (req, res) {
+  function returnMenuForCustomer(result) {
+    console.log(result);
+    res.json({MenuForCustomer: result});
+  }
+
+  OrderDao.getMenuForCustomer(returnMenuForCustomer);
 });
 
 // this must be the last route, all endpoints go prior to this

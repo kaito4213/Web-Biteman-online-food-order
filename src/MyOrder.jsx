@@ -23,7 +23,7 @@ class MyOrder extends React.Component {
     // loading..... component
 
     // request data
-    $.ajax({
+       $.ajax({
       url: '/getMyOrders',
       type: 'get',
       dataType: 'json',

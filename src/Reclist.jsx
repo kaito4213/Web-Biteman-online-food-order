@@ -47,14 +47,22 @@ class RecTable extends Component {
 
 var data = [];
 
-for (let i = 0; i < 4; i++) {
-  data.push({
-    zip: i,
-    name: 'Pho' + i,
-    type: (i % 2) ? 'Asian' : 'French',
-    durl: i,
-  });
-}
+$.ajax({
+  url: '/getRecommendationList',
+  type: 'get',
+  dataType: 'json',
+  success: function (json) {
+    console.log(json);
+    debugger;
+    data =  json.recommendation;
+  }.bind(this),
+
+  error: function (xhr, status, err) {
+    debugger;
+    console.log(xhr.responseText);
+    console.log(err);
+  }.bind(this)
+});
 
 class Reclist extends Component {
   render() {

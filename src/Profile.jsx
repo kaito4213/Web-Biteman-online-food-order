@@ -9,11 +9,32 @@ import Home from './Home';
  * PROBLEM2: style
  */
 
-var dataSource = {
+/*var dataSource = {
   uid: '001',
   uname: 'test',
   address: 'address',
 };
+*/
+
+var dataSource = {};
+// request user information
+$.ajax({
+  url: '/getMyProfile',
+  type: 'get',
+  dataType: 'json',
+  success: function (json) {
+    console.log(json);
+    debugger;
+    dataSource = json.profile[0];
+  }.bind(this),
+
+  error: function (xhr, status, err) {
+    debugger;
+    console.log(xhr.responseText);
+    console.log(err);
+  }.bind(this)
+});
+
 
 class Profile extends Component {
   constructor() {
