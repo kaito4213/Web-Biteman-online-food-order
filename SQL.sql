@@ -3,27 +3,27 @@ use cs542;
 CREATE TABLE Customer
 (
   cID CHAR(20) NOT NULL,
+  cmail CHAR(20) NOT NULL,
   cpwd CHAR(20) NOT NULL,
   address CHAR(50) NOT NULL,
-  czipcode INT NOT NULL,
+  czipcode CHAR(5) NOT NULL,
   cname CHAR(20) NOT NULL,
-  PRIMARY KEY (cID),
-  check (czipcode >= 10000 and czipcode <= 99999)
+  PRIMARY KEY (cID)
 );
 
 CREATE TABLE Restaurant
 (
   rID CHAR(20) NOT NULL,
+  rname CHAR(20) NOT NULL,
   rpwd CHAR(20) NOT NULL,
   tel INT NOT NULL,
   type CHAR(10) NOT NULL,
   city CHAR(10) NOT NULL,
   state CHAR(10) NOT NULL,
   street CHAR(20) NOT NULL,
-  rzipcode INT NOT NULL,
+  rzipcode CHAR(5) NOT NULL,
   durl CHAR(50) NOT NULL,
-  PRIMARY KEY (rID),
-  check (rzipcode >= 10000 and rzipcode <= 99999)
+  PRIMARY KEY (rID)
 );
 
 CREATE TABLE Orders
@@ -31,7 +31,7 @@ CREATE TABLE Orders
   oID CHAR(20) NOT NULL,
   status CHAR(10) NOT NULL,
   sum FLOAT NOT NULL,
-  otime DATE NOT NULL,
+  otime TIME NOT NULL,
   odate DATE NOT NULL,
   cID CHAR(20) NOT NULL,
   rID CHAR(20) NOT NULL,
@@ -72,6 +72,17 @@ CREATE TABLE contains
   PRIMARY KEY (oID, dID),
   FOREIGN KEY (oID) REFERENCES Orders(oID),
   FOREIGN KEY (dID) REFERENCES Dish(dID)
+);
+
+CREATE TABLE cart
+(
+  cartID CHAR(20) NOT NULL,
+  dID CHAR(20) NOT NULL,
+  dname CHAR(20) NOT NULL,
+  cnum INT NOT NULL,
+  price FLOAT NOT NULL,
+  PRIMARY KEY (cartID),
+  FOREIGN KEY (dID, dname, price) REFERENCES Dish(dID, dname, price)
 );
 
 insert into Customer values ('c1', 'aaa', 'Boston', 10000, 'AA');
