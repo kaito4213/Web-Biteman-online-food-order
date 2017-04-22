@@ -3,7 +3,7 @@ const mysql = require('mysql');
 const pool = mysql.createPool({
   host: 'localhost',
   user: 'root',
-  password: 'susie19910401',
+  password: 'mysql',
   database: 'cs542',
   port: 3306
 });
@@ -22,7 +22,7 @@ module.exports = {
       conn.query(preparedSql, arr, function (err, rows) {
         if (err) console.log(err);
         cb(rows);
-        console.log('dbconnection',rows);
+        console.log('dbconnection', rows);
         conn.release();
       });
     });
