@@ -15,22 +15,22 @@ import {Modal} from 'antd';
  */
 class OrderRow extends Component {
   render() {
-    var record = this.props.product;
+    let record = this.props.product;
     // status:{placed(cancel),accepted(confirm),delivered(comment),finished}
     let btnLabel = null;
-    if (record.status == 'placed') {
+    if (record.status === 'placed') {
       btnLabel = 'cancel';
-    } else if (record.status == 'accepted') {
+    } else if (record.status === 'accepted') {
       btnLabel = 'confirm';
-    } else if (record.status == 'delivered') {
+    } else if (record.status === 'delivered') {
       btnLabel = 'comment'
     } else {
       btnLabel = '';
     }
-    var btn = [];
-    if (btnLabel != '') {
+    let btn = [];
+    if (btnLabel !== '') {
       btn = (
-        <button type="button" onClick={()=>this.props.onOrderRowClick(record)}>{btnLabel}</button>
+        <button type="button" onClick={() => this.props.onOrderRowClick(record)}>{btnLabel}</button>
       )
     }
     return (
@@ -55,7 +55,7 @@ class Ordertable extends Component {
     let rows = [];
     let rowNum = 1;
     this.props.data.forEach((product) => {
-      rows.push(<OrderRow key={rowNum++} product={product} onOrderRowClick={(e)=>this.props.onOrderRowClick(e)}/>);
+      rows.push(<OrderRow key={rowNum++} product={product} onOrderRowClick={(e) => this.props.onOrderRowClick(e)}/>);
     });
     return (
       <table>
@@ -76,21 +76,7 @@ class Ordertable extends Component {
   }
 }
 
-/*/data can be array or DataSource object
- var data = [];
- for (let i = 0; i < 20; i++) {
- data.push({
- oID: i,
- rName: 'Pho' + i,
- odate: '04/01/17',
- otime: 'time',
- sum: 10 + i,
- status: (i % 4) ? (i % 4 == 1) ? 'placed' : (i % 4 == 2) ? 'delivered' : 'finished' : 'accepted',
- });
- }*/
-
-
-class Orderlist extends Component {
+class OrderList extends Component {
   constructor() {
     super();
     this.state = {
@@ -127,9 +113,9 @@ class Orderlist extends Component {
   handleOk = () => {
     let len = this.state.orderHistory.length;
 
-    if (this.state.modalState.op == 1) {//placed
+    if (this.state.modalState.orderOperation === 1) {//placed
       for (let row = 0; row < len; row++) {
-        if (this.state.orderHistory[row].oid == this.state.modalState.oid) {
+        if (this.state.orderHistory[row].oid === this.state.modalState.oid) {
           console.log(this.state.modalState.oid);
           const orderHistory = this.state.orderHistory;
           orderHistory[row].status = 'cancelled';
@@ -137,9 +123,9 @@ class Orderlist extends Component {
           alert('You have cancelled your order.');
         }
       }
-    } else if (this.state.modalState.op == 2) {//accepted
+    } else if (this.state.modalState.orderOperation === 2) {//accepted
       for (let row = 0; row < len; row++) {
-        if (this.state.orderHistory[row].oid == this.state.modalState.oid) {
+        if (this.state.orderHistory[row].oid === this.state.modalState.oid) {
           const orderHistory = this.state.orderHistory;
           orderHistory[row].status = 'delivered';
           this.setState({orderHistory,});
@@ -159,63 +145,61 @@ class Orderlist extends Component {
   /**
    * After click a button, show a confirmation modal
    *
-   * @param x the
+   * @param orderData the
    */
-  showConfirm(x) {
-    let op = 0;
-    if (x.status == 'placed') {
-      op = 1;
-    } else if (x.status == 'accepted') {
-      op = 2;
+  showConfirm(orderData) {
+    // the operation did on the order
+    let orderOperation = 0;
+    let orderId = orderData.oid;
+    let modalText = '';
+    let modalTitle = '';
+    // default show modal
+    let isModalVisible = true;
+
+
+    if (orderData.status === 'placed') {
+      orderOperation = 1;
+    } else if (orderData.status === 'accepted') {
+      orderOperation = 2;
     }
 
-    this.setState({
-      // modalState: {oid: x.oid, op: op},
-      modalState: {
-        modalText: 'Your will cancel the order ' + x.oid + '.',
-        title: 'Are you going to cancel the order?'
-      }
-    });
-
-    console.log(this.state.modalState);
-
-    if (x.status == 'placed') {
-      this.setState({
-        modalState: {
-          oid: x.oid,
-          op: op,
-          // title: 'Are you going to cancel the order?',
-          // modalText: 'Your will cancel the order ' + x.oid + '.',
-          visible: true
-        }
-      });
-    } else if (x.status == 'accepted') {
-      this.setState({
-        modalState: {
-          oid: x.oid, op: op,
-          title: 'Are you going to confirm the order?',
-          modalText: 'Your will confirm the order ' + x.oid + '.',
-          visible: true
-        }
-      });
-    } else if (x.status == 'delivered') {
+    if (orderData.status === 'placed') {
+      modalTitle = 'Are you going to cancel the order?';
+      modalText = 'Your will cancel the order ' + orderId + '.';
+      isModalVisible = true;
+    } else if (orderData.status === 'accepted') {
+      modalTitle = 'Are you going to confirm the order?';
+      modalText = 'Your will confirm the order ' + orderId + '.';
+      isModalVisible = true;
+    } else if (orderData.status === 'delivered') {
       //Link to comment
     }
 
     // set state
+    this.setState({
+      modalState: {
+        oid: orderId,
+        orderOperation: orderOperation,
+        title: modalTitle,
+        modalText: modalText,
+        visible: isModalVisible
+      }
+    });
+
   }
 
   render() {
     return (
       <div>
-        <Ordertable data={this.state.orderHistory} onOrderRowClick={(e) =>this.showConfirm(e)}/>
-        <Modal title={this.state.modalState.title}
-               visible={this.state.modalState.visible}
-               oid={this.state.modalState.oid}
-               okText={'OK'}
-               cancelText={'Cancel'}
-               onOk={this.handleOk}
-               onCancel={this.handleCancel}>
+        <Ordertable data={this.state.orderHistory} onOrderRowClick={(e) => this.showConfirm(e)}/>
+        <Modal
+          title={this.state.modalState.title}
+          visible={this.state.modalState.visible}
+          oid={this.state.modalState.oid}
+          okText={'OK'}
+          cancelText={'Cancel'}
+          onOk={this.handleOk}
+          onCancel={this.handleCancel}>
           <p>{this.state.modalState.modalText}</p>
         </Modal>
       </div>
@@ -223,4 +207,4 @@ class Orderlist extends Component {
   }
 }
 
-export default Orderlist;
+export default OrderList;
