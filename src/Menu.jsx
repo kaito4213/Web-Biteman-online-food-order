@@ -54,6 +54,8 @@ const Menu = React.createClass({
   getRandomDate(start, end) {
     return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime())).toLocaleDateString();
   },
+
+  //qeury menu from database using rid
   createRows(numberOfRows) {
     let rows = [];
     for (let i = 1; i < numberOfRows; i++) {

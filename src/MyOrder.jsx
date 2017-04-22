@@ -1,14 +1,5 @@
 import React from 'react';
 
-let order = [
-  {oid: '1', rid: '1', price: '$49.99', quantity: '1', dname: 'Pad Thai'},
-  {oid: '2', rid: '1', price: '$49.99', quantity: '1', dname: 'crab rangoon'},
-  {oid: '3', rid: '1', price: '$49.99', quantity: '1', dname: 'downpling'},
-  {oid: '4', rid: '1', price: '$49.99', quantity: '1', dname: 'noodle'},
-  {oid: '5', rid: '1', price: '$49.99', quantity: '1', dname: 'fried rice'},
-  {oid: '6', rid: '1', price: '$49.99', quantity: '1', dname: 'chicken wings'}
-];
-
 let totalPrice = 0;
 
 class MyOrder extends React.Component {
@@ -23,14 +14,15 @@ class MyOrder extends React.Component {
     // loading..... component
 
     // request data
-       $.ajax({
+    $.ajax({
       url: '/getMyOrders',
       type: 'get',
       dataType: 'json',
+
       success: function (json) {
         console.log(json);
         debugger;
-        this.setState({order: json.orderInfo})
+        this.setState({order: json.orderInfo});
         ;
       }.bind(this),
 

@@ -11,27 +11,6 @@ import './css/antd.scss';
  * 2.link within one row(similar to Orderlist)
  */
 
-// get restaurant list from database
-var data = [];
-
-// request data
-$.ajax({
-  url: '/getRestaurantList',
-  type: 'get',
-  dataType: 'json',
-  success: function (json) {
-    console.log(json);
-    debugger;
-    data =  json.restaurantList;
-  }.bind(this),
-
-  error: function (xhr, status, err) {
-    debugger;
-    console.log(xhr.responseText);
-    console.log(err);
-  }.bind(this)
-});
-
 class ResRow extends Component {
   render() {
     return (
@@ -129,7 +108,7 @@ class FilterableProductTable extends Component {
 class Reslist extends Component {
   render() {
     return (
-      <FilterableProductTable products={data} onClick={(e)=>this.props.onClick(e)}/>
+      <FilterableProductTable products={this.props.restaurantList} onClick={(e)=>this.props.onClick(e)}/>
     )
   }
 }

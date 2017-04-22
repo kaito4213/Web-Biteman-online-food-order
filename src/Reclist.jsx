@@ -14,11 +14,11 @@ import './css/antd.scss';
 class ResRow extends Component {
   render() {
     return (
-      <tr>
-        <td>{this.props.product.name}</td>
-        <td>{this.props.product.zip}</td>
-        <td>{this.props.product.type}</td>
-      </tr>
+      <div>
+        <div>{this.props.product.name}</div>
+        <div>{this.props.product.zip}</div>
+        <div>{this.props.product.type}</div>
+      </div>
     );
   }
 }
@@ -45,29 +45,36 @@ class RecTable extends Component {
   }
 }
 
-var data = [];
-
-$.ajax({
-  url: '/getRecommendationList',
-  type: 'get',
-  dataType: 'json',
-  success: function (json) {
-    console.log(json);
-    debugger;
-    data =  json.recommendation;
-  }.bind(this),
-
-  error: function (xhr, status, err) {
-    debugger;
-    console.log(xhr.responseText);
-    console.log(err);
-  }.bind(this)
-});
-
+/**
+ * A list of all of the recommendations
+ */
 class Reclist extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {recommendation: []};
+  }
+
+  componentDidMount() {
+    // load all of the recommendations
+    $.ajax({
+      url: '/getRecommendationList',
+      type: 'get',
+      dataType: 'json',
+      success: function (json) {
+        var recommendation = json.recommendation;
+        this.setState({recommendation: recommendation})
+      }.bind(this),
+      error: function (xhr, status, err) {
+        debugger;
+        console.log(xhr.responseText);
+        console.log(err);
+      }.bind(this)
+    });
+  }
+
   render() {
     return (
-      <RecTable products={data}/>
+      <RecTable products={this.state.recommendation}/>
     )
   }
 }

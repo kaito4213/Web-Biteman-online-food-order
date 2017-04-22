@@ -37,11 +37,13 @@ render(
         <Route path='/help' component={Help}/>
 
         <Route path='/custmenu/:rid' component={CustMenu}/>
+
         <Route path='user' component={User}>
           <Route path='orderlist' component={Orderlist}/>
           <Route path='profile' component={Profile}/>
           <Route path='myOrder' component={MyOrder}/>
         </Route>
+
         <Route path='res' component={Res}>
           <Route path='reslist' component={Reslist}/>
           <Route path='reclist' component={Reclist}/>

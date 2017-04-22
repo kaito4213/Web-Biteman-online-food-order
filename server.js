@@ -51,7 +51,7 @@ app.get('/getMyOrders', function (req, res) {
 app.post('/getLoginInfo', function (req, res) {
 
     var inputEmail = req.body.email;
-    var table = req.body.table
+    var table = req.body.table;
 
     function returnPwd(result) {
       //console.log(result);
@@ -74,30 +74,23 @@ app.get('/getRestaurantList', function (req, res) {
   OrderDao.getRestaurantList(returnAllRestaurants);
 });
 
-//get some restaurant rows
-app.get('/getRestaurantList', function (req, res) {
-  function returnAllRestaurants(result) {
-    //console.log(result);
-    res.json({restaurantList: result});
-  }
-
-  OrderDao.getRestaurantList(returnAllRestaurants);
-});
 
 //get personal information shown in profile page
-app.get('/getMyProfile', function (req, res) {
+app.post('/getMyProfile', function (req, res) {
+  var customerID = req.body.customerID;
+
   function returnMyProfile(result) {
-    //console.log(result);
     res.json({profile: result});
+    console.log(result);
   }
 
-  OrderDao.getMyProfile(returnMyProfile);
+  OrderDao.getMyProfile( customerID, returnMyProfile);
 });
 
 //get recommend restaurant
 app.get('/getRecommendationList', function (req, res) {
   function returnRecommendationList(result) {
-    //console.log(result);
+    console.log(result);
     res.json({recommendation: result});
   }
 
@@ -105,14 +98,20 @@ app.get('/getRecommendationList', function (req, res) {
 });
 
 //get restaurant menu for customer to choose
-app.get('/getMenuForCustomer', function (req, res) {
+app.post('/getMenuForCustomer', function (req, res) {
+  var rid = req.body.restaurantId;
+
   function returnMenuForCustomer(result) {
-    console.log(result);
+    //console.log(result);
     res.json({MenuForCustomer: result});
   }
 
-  OrderDao.getMenuForCustomer(returnMenuForCustomer);
+  OrderDao.getMenuForCustomer(rid, returnMenuForCustomer);
 });
+
+
+
+
 
 // this must be the last route, all endpoints go prior to this
 app.get('*', function (req, res) {

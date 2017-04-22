@@ -5,80 +5,40 @@ import React from 'react';
  *
  * @type {*[]}
  */
-/*var MENU = [
-  {
-    did: '1',
-    rid: '1',
-    price: '$49.99',
-    dname: 'Pad Thai',
-    discription: 'Chicken, and shrimp; stir-fried with rice noodles, egg, scallions, bean sprouts, and ground peanuts.'
-  },
-  {
-    did: '2',
-    rid: '1',
-    price: '$49.99',
-    dname: 'crab rangoon',
-    discription: 'Chicken, and shrimp; stir-fried with rice noodles, egg, scallions, bean sprouts, and ground peanuts.'
-  },
-  {
-    did: '3',
-    rid: '1',
-    price: '$49.99',
-    dname: 'downpling',
-    discription: 'Chicken, and shrimp; stir-fried with rice noodles, egg, scallions, bean sprouts, and ground peanuts.'
-  },
-  {
-    did: '4',
-    rid: '1',
-    price: '$49.99',
-    dname: 'noodle',
-    discription: 'Chicken, and shrimp; stir-fried with rice noodles, egg, scallions, bean sprouts, and ground peanuts.'
-  },
-  {
-    did: '5',
-    rid: '1',
-    price: '$49.99',
-    dname: 'fried rice',
-    discription: 'Chicken, and shrimp; stir-fried with rice noodles, egg, scallions, bean sprouts, and ground peanuts.'
-  },
-  {
-    did: '6',
-    rid: '1',
-    price: '$49.99',
-    dname: 'chicken wings',
-    discription: 'Chicken, and shrimp; stir-fried with rice noodles, egg, scallions, bean sprouts, and ground peanuts.'
-  }
-];*/
-let MENU = [];
-// request data
-$.ajax({
-  url: '/getMenuForCustomer',
-  type: 'get',
-  dataType: 'json',
-  success: function (json) {
-    console.log(json);
-    debugger;
-    MENU =  json.MenuForCustomer;
-  }.bind(this),
-
-  error: function (xhr, status, err) {
-    debugger;
-    console.log(xhr.responseText);
-    console.log(err);
-  }.bind(this)
-});
-
-
-
 
 /*this is the parent of menu page*/
 class CustMenu extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {customerMenu: []};
+  }
+
+  componentDidMount() {
+    $.ajax({
+      url: '/getMenuForCustomer',
+      type: 'post',
+      data: {restaurantId: this.props.params.rid},
+      dataType: 'json',
+      success: function (json) {
+        debugger;
+        let customerMenu = json.MenuForCustomer;
+        this.setState({customerMenu: customerMenu});
+      }.bind(this),
+      error: function (xhr, status, err) {
+        debugger;
+        console.log(xhr.responseText);
+        console.log(err);
+      }.bind(this)
+    });
+  }
+
   render() {
     return (
       <div>
-        <h1>{this.props.params.name}</h1>
+        <h1>{this.props.params.rid}</h1>
         <h1>Menu</h1>
-        <MenuTable menu={MENU}/>
+        <MenuTable menu={this.state.customerMenu}/>
       </div>
     )
   }
@@ -87,20 +47,20 @@ class CustMenu extends React.Component {
 /*get each row shown in menu table*/
 class MenuTable extends React.Component {
   render() {
-    var cuisionRows = []
+    let cusionRows = [];
     this.props.menu.forEach(function (cuision) {
-      cuisionRows.push(<CuisionRow cuision={cuision} key={cuision.did}/>)
-    })
+      cusionRows.push(<CuisionRow cuision={cuision} key={cuision.did}/>)
+    });
 
     return (
       <div>
-        <tbody>{cuisionRows}</tbody>
+        <tbody>{cusionRows}</tbody>
       </div>
 
     )
   }
 }
-/*specify what is shown in each menu row, the price, discription....*/
+/*specify what is shown in each menu row, the price, description....*/
 class CuisionRow extends React.Component {
   render() {
     return (
@@ -113,7 +73,7 @@ class CuisionRow extends React.Component {
           </h3>
         </div>
         <p>Description: {this.props.cuision.discription}</p>
-        <hr></hr>
+        <hr/>
       </div>
     )
   }

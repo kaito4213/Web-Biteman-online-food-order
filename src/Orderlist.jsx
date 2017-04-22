@@ -19,7 +19,7 @@ class OrderRow extends Component {
     var btn = [];
     if (btnlabel != '') {
       btn = (
-        <button class="button" onClick={()=>this.props.onClick(record)}>{btnlabel}</button>
+        <button type="button" onClick={()=>this.props.onClick(record)}>{btnlabel}</button>
       )
     }
     return (<tr>
@@ -38,9 +38,10 @@ class OrderRow extends Component {
 
 class Ordertable extends Component {
   render() {
-    var rows = [];
+    let rows = [];
+    let rowNum = 1;
     this.props.data.forEach((product) => {
-      rows.push(<OrderRow product={product} onClick={(e)=>this.props.onClick(e)}/>);
+      rows.push(<OrderRow key={rowNum++} product={product} onClick={(e)=>this.props.onClick(e)}/>);
     });
     return (
       <table>

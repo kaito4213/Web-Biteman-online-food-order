@@ -42,6 +42,7 @@ class Login extends React.Component {
             this.context.router.replace('/home');
             localStorage.setItem('userName', inputEmail);
             localStorage.setItem('type', this.state.type);
+            localStorage.setItem('customerID', json.loginInfo[0].cID);
           }
           else {
             this.setState({error: true});
