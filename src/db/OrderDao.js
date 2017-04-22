@@ -50,6 +50,27 @@ function getMenuForCustomer(rid, cb) {
   DBConnection.getData('SELECT did, rid, dname, description, price FROM DISH WHERE rid = ?;', [rid], cb);
 }
 
+function getMyOrderHistory(cid, cb){
+
+  var query = 'SELECT orders.oid, restaurant.name, odate, ordertime, price, orders.status ' +
+     'FROM orders, dish,restaurant ' +
+     'WHERE orders.did = dish.did ' +
+     'AND orders.rid = RESTAURANT.rid ' +
+     'AND orders.cid = ?; ';
+
+    DBConnection.getData(query,[cid], cb);
+}
+
+function addCustomer(address,zipcaode,name,pwd,email,cb){
+
+  DBConnection.insertData('INSERT INTO customer VALUE (now(),?,?,?,?,?);', [address,zipcaode,name,pwd,email],cb);
+}
+
+function getRestaurantMenu(rid, cb) {
+  DBConnection.getData('SELECT did, dname, description, price FROM DISH WHERE rid = ?;', [rid], cb);
+}
+
+
 exports.getAllOrders = getAllOrders;
 exports.deleteCustomerOrder = deleteCustomerOrder;
 exports.getCustLoginInfo = getCustLoginInfo;
@@ -58,3 +79,5 @@ exports.getRestaurantList = getRestaurantList;
 exports.getMyProfile = getMyProfile;
 exports.getRecommendationList = getRecommendationList;
 exports.getMenuForCustomer = getMenuForCustomer;
+exports.getMyOrderHistory = getMyOrderHistory;
+exports.addCustomer = addCustomer;

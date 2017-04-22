@@ -21,7 +21,6 @@ class CustMenu extends React.Component {
       data: {restaurantId: this.props.params.rid},
       dataType: 'json',
       success: function (json) {
-        debugger;
         let customerMenu = json.MenuForCustomer;
         this.setState({customerMenu: customerMenu});
       }.bind(this),

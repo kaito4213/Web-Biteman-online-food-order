@@ -20,7 +20,6 @@ class MyOrder extends React.Component {
       dataType: 'json',
 
       success: function (json) {
-        console.log(json);
         debugger;
         this.setState({order: json.orderInfo});
         ;
@@ -46,7 +45,6 @@ class MyOrder extends React.Component {
       type: 'post',
       dataType: 'json', data: {orderId: OID, dishId: DID},
       success: function (json) {
-        console.log(json);
         debugger;
       }.bind(this),
       error: function (xhr, status, err) {
@@ -108,7 +106,6 @@ class OrderTable extends React.Component {
 class OrderRow extends React.Component {
 
   constructor(props) {
-    console.log(props);
     super(props);
   }
 

@@ -39,7 +39,6 @@ app.post('/deleteMyOrder', function (req, res) {
 // endpoint to get all of the orders of a customer or merchant
 app.get('/getMyOrders', function (req, res) {
   function returnAllOrders(result) {
-    //console.log(result);
     res.json({orderInfo: result});
   }
 
@@ -54,7 +53,6 @@ app.post('/getLoginInfo', function (req, res) {
     var table = req.body.table;
 
     function returnPwd(result) {
-      //console.log(result);
       res.json({loginInfo: result});
     }
 
@@ -81,7 +79,7 @@ app.post('/getMyProfile', function (req, res) {
 
   function returnMyProfile(result) {
     res.json({profile: result});
-    console.log(result);
+
   }
 
   OrderDao.getMyProfile( customerID, returnMyProfile);
@@ -90,7 +88,6 @@ app.post('/getMyProfile', function (req, res) {
 //get recommend restaurant
 app.get('/getRecommendationList', function (req, res) {
   function returnRecommendationList(result) {
-    console.log(result);
     res.json({recommendation: result});
   }
 
@@ -109,8 +106,42 @@ app.post('/getMenuForCustomer', function (req, res) {
   OrderDao.getMenuForCustomer(rid, returnMenuForCustomer);
 });
 
+//get personal order history shown in order list page
+app.post('/getMyOrderHistory', function (req, res) {
+  var customerID = req.body.customerID;
 
+  function returnOrderHistory(result) {
+    res.json({orderHistory: result});
+  }
 
+  OrderDao.getMyOrderHistory( customerID, returnOrderHistory);
+});
+
+//insert new customer into database
+app.post('/addCustomer', function (req, res) {
+  var userName = req.body.userName;
+  var userEmail = req.body.userEmail;
+  var address = req.body.address;
+  var zipcode = req.body.zipcode;
+  var password = req.body.password;
+
+  function returnResult(result) {
+    res.json({success:result});
+  }
+
+  OrderDao.addCustomer( address,zipcode,userName,password,userEmail, returnResult);
+});
+
+//get menu for restaurant user
+app.post('/getMenuForRestaurant', function (req, res) {
+  var restaurantID = req.body.restaurantID;
+
+  function returnMenuForRestaurant(result) {
+    res.json({restaurantMenu: result});
+  }
+
+  OrderDao.getRestaurantMenu( restaurantID, returnMenuForRestaurant);
+});
 
 
 // this must be the last route, all endpoints go prior to this

@@ -1,40 +1,98 @@
 import React from 'react';
 
-// Sign up page, can add any input box if needed
+class signup extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      error: false
+    };
+  };
 
-export default class Form extends React.Component {
-  constructor() {
-    super();
-  }
+  handleSubmit() {
+    event.preventDefault();
+    const userName = this.inputUsername.value;
+    const userEmail = this.inputUseremail.value;
+    const address = this.inputAddress.value;
+    const zipcode = this.inputZip.value;
+    const password1 = this.inputPassword1.value;
+    const password2 = this.inputPassword2.value;
+
+    if (password1 == password2) {
+      this.context.router.replace('/home');
+
+      //inser new customer into database
+      $.ajax({
+        url: '/addCustomer',
+        type: 'post',
+        dataType: 'json',
+        data: {userName: userName,userEmail: userEmail, address: address, password: password1, zipcode: zipcode},
+        success: function (json) {
+        }.bind(this),
+        error: function (xhr, status, err) {
+          debugger;
+          console.log(xhr.responseText);
+          console.log(err);
+        }.bind(this)
+      });
+
+
+    } else {
+      this.setState({error: true});
+    }
+  };
 
   render() {
     return (
-      <div className="sign-up-right">
+      <div>
         <h3 className="sign-up-title">Sign Up</h3>
-        <div className="sign-up-field">
-          <p className="sign-up-label">Email</p>
-          <input className="sign-up-text" type="text"/>
-        </div>
-        <div>
-          <p className="sign-up-field">Address</p>
-          <input className="sign-up-text" type="text"/>
-        </div>
-        <div>
-          <p className="sign-up-field">Zipcode</p>
-          <input className="sign-up-text" type="text"/>
-        </div>
-        <div className="sign-up-field">
-          <p className="sign-up-label">Password</p>
-          <input className="sign-up-text" type="password"/>
-        </div>
-        <div className="sign-up-field">
-          <p className="sign-up-label">Confirm password</p>
-          <input className="sign-up-text" type="password"/>
-        </div>
-        <div>
-          <button className="sign-up-button">Sign Up</button>
-        </div>
+        <form onSubmit={this.handleSubmit.bind(this)}>
+          <div>
+            <p>Your name</p>
+            <input ref={(input) => {
+              this.inputUsername = input
+            }} type="text" required/></div>
+          <div>
+            <p>Email</p>
+            <input ref={(input) => {
+              this.inputUseremail = input
+            }} type="text" required/></div>
+          <div>
+            <p>Address</p>
+            <input ref={(input) => {
+              this.inputAddress = input
+            }} type="text" required/></div>
+          <div>
+            <p>Zip Code</p>
+            <input ref={(input) => {
+              this.inputZip = input
+            }} type="text" required/></div>
+          <div>
+            <p>Password</p>
+            <input ref={(input) => {
+              this.inputPassword1 = input
+            }} type="password" required/></div>
+          <div>
+            <p>Confirm password</p>
+            <input ref={(input) => {
+              this.inputPassword2 = input
+            }} type="password" required/></div>
+          <div>
+            <button type="submit">Sign up</button>
+          </div>
+          <div>
+            {this.state.error && (
+              <h2>Passwords should be equal!</h2>
+            )}
+          </div>
+        </form>
       </div>
-    );
-  }
+    )
+  };
+
 }
+
+signup.contextTypes = {
+  router: React.PropTypes.object.isRequired
+};
+
+export default signup;

@@ -43,6 +43,7 @@ class Login extends React.Component {
             localStorage.setItem('userName', inputEmail);
             localStorage.setItem('type', this.state.type);
             localStorage.setItem('customerID', json.loginInfo[0].cID);
+            localStorage.setItem('restaurantID', json.loginInfo[0].rID);
           }
           else {
             this.setState({error: true});
