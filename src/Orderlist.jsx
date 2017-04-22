@@ -15,7 +15,6 @@ import {Modal} from 'antd';
  */
 class OrderRow extends Component {
   render() {
-    debugger;
     var record = this.props.product;
     // status:{placed(cancel),accepted(confirm),delivered(comment),finished}
     let btnLabel = null;
@@ -31,7 +30,7 @@ class OrderRow extends Component {
     var btn = [];
     if (btnLabel != '') {
       btn = (
-        <button type="button" onClick={()=>this.props.onClick(record)}>{btnLabel}</button>
+        <button type="button" onClick={()=>this.props.onOrderRowClick(record)}>{btnLabel}</button>
       )
     }
     return (
@@ -56,8 +55,7 @@ class Ordertable extends Component {
     let rows = [];
     let rowNum = 1;
     this.props.data.forEach((product) => {
-      debugger;
-      rows.push(<OrderRow key={rowNum++} product={product} onClick={(e)=>this.props.onClick(e)}/>);
+      rows.push(<OrderRow key={rowNum++} product={product} onOrderRowClick={(e)=>this.props.onOrderRowClick(e)}/>);
     });
     return (
       <table>
@@ -96,9 +94,8 @@ class Orderlist extends Component {
   constructor() {
     super();
     this.state = {
-      //dataSource: data,
       orderHistory: [],
-      visible: false,
+      modalState: {visible: false}
     };
     this.showConfirm = this.showConfirm.bind(this);
     //this.handleOk = this.handleOk.bind(this);
@@ -129,18 +126,20 @@ class Orderlist extends Component {
 
   handleOk = () => {
     let len = this.state.orderHistory.length;
-    if (this.state.op == 1) {//placed
+
+    if (this.state.modalState.op == 1) {//placed
       for (let row = 0; row < len; row++) {
-        if (this.state.orderHistory[row].oID == this.state.oid) {
+        if (this.state.orderHistory[row].oid == this.state.modalState.oid) {
+          console.log(this.state.modalState.oid);
           const orderHistory = this.state.orderHistory;
           orderHistory[row].status = 'cancelled';
           this.setState({orderHistory,});
           alert('You have cancelled your order.');
         }
       }
-    } else if (this.state.op == 2) {//accepted
+    } else if (this.state.modalState.op == 2) {//accepted
       for (let row = 0; row < len; row++) {
-        if (this.state.orderHistory[row].oID == this.state.oid) {
+        if (this.state.orderHistory[row].oid == this.state.modalState.oid) {
           const orderHistory = this.state.orderHistory;
           orderHistory[row].status = 'delivered';
           this.setState({orderHistory,});
@@ -149,12 +148,12 @@ class Orderlist extends Component {
       }
     }
     this.setState({
-      visible: false,
+      modalState: {visible: false}
     });
   };
 
   handleCancel = () => {
-    this.setState({visible: false});
+    this.setState({modalState: {visible: false}});
   };
 
   /**
@@ -163,39 +162,61 @@ class Orderlist extends Component {
    * @param x the
    */
   showConfirm(x) {
+    let op = 0;
+    if (x.status == 'placed') {
+      op = 1;
+    } else if (x.status == 'accepted') {
+      op = 2;
+    }
+
     this.setState({
-      oid: x.oID,
-      op: x.status == 'placed' ? 1 : x.status == 'accepted' ? 2 : 0
+      // modalState: {oid: x.oid, op: op},
+      modalState: {
+        modalText: 'Your will cancel the order ' + x.oid + '.',
+        title: 'Are you going to cancel the order?'
+      }
     });
+
+    console.log(this.state.modalState);
+
     if (x.status == 'placed') {
       this.setState({
-        title: 'Are you going to cancel the order?',
-        modalText: 'Your will cancel the order ' + x.oID + '.',
-        visible: true,
+        modalState: {
+          oid: x.oid,
+          op: op,
+          // title: 'Are you going to cancel the order?',
+          // modalText: 'Your will cancel the order ' + x.oid + '.',
+          visible: true
+        }
       });
     } else if (x.status == 'accepted') {
       this.setState({
-        title: 'Are you going to confirm the order?',
-        modalText: 'Your will confirm the order ' + x.oID + '.',
-        visible: true,
+        modalState: {
+          oid: x.oid, op: op,
+          title: 'Are you going to confirm the order?',
+          modalText: 'Your will confirm the order ' + x.oid + '.',
+          visible: true
+        }
       });
     } else if (x.status == 'delivered') {
       //Link to comment
     }
+
+    // set state
   }
 
   render() {
     return (
       <div>
-        <Ordertable data={this.state.orderHistory} onClick={(e) =>this.showConfirm(e)}/>
-        <Modal title={this.state.title}
-               visible={this.state.visible}
-               oid={this.state.oid}
+        <Ordertable data={this.state.orderHistory} onOrderRowClick={(e) =>this.showConfirm(e)}/>
+        <Modal title={this.state.modalState.title}
+               visible={this.state.modalState.visible}
+               oid={this.state.modalState.oid}
                okText={'OK'}
                cancelText={'Cancel'}
                onOk={this.handleOk}
                onCancel={this.handleCancel}>
-          <p>{this.state.modalText}</p>
+          <p>{this.state.modalState.modalText}</p>
         </Modal>
       </div>
     );
