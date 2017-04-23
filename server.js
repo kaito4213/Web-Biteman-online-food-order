@@ -138,6 +138,21 @@ app.post('/getMenuForRestaurant', function (req, res) {
   OrderDao.getRestaurantMenu(restaurantID, returnMenuForRestaurant);
 });
 
+//add food to cart
+app.post('/addFoodtoCart', function (req, res) {
+
+  var cid = req.body.customerId,
+       rid = req.body.restaurantId,
+       did = req.body.dishId,
+       price = req.body.price;
+
+  function returnResult(result) {
+    res.json({result: result});
+  }
+
+  OrderDao.addFoodtoCart(did,cid,rid,price, returnResult);
+});
+
 
 // this must be the last route, all endpoints go prior to this
 app.get('*', function (req, res) {

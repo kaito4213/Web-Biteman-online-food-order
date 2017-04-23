@@ -78,6 +78,10 @@ function updateOrderStatusCustomer(orderId, updatedStatus, cb) {
   DBConnection.updateData('UPDATE cs542.orders SET status = ? WHERE oID = ?;', [updatedStatus, orderId], cb);
 }
 
+function addFoodtoCart(did, cid, rid, price, cb) {
+  DBConnection.insertData('INSERT INTO Cart VALUE (Now(),?,?,?,?);', [did, cid, rid, price], cb);
+}
+
 
 exports.getAllOrders = getAllOrders;
 exports.deleteCustomerOrder = deleteCustomerOrder;
@@ -90,3 +94,4 @@ exports.getMenuForCustomer = getMenuForCustomer;
 exports.getMyOrderHistory = getMyOrderHistory;
 exports.addCustomer = addCustomer;
 exports.updateOrderStatusCustomer = updateOrderStatusCustomer;
+exports.addFoodtoCart = addFoodtoCart;
