@@ -8,5 +8,8 @@ module.exports = {
     ORDER_ACCEPTED: 'accepted',
     ORDER_PLACED: 'placed',
     ORDER_DELIVERED: 'delivered'
-  }
+  },
+  CANCEL: 'cancel',
+  ACCEPTED: 'accepted',
+  DELIVERED: 'delivered'
 };
