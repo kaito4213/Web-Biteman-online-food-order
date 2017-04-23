@@ -3,3 +3,4 @@ npm-debug.log
 .idea
 .DS_Store
 /public/static/bundle.js
+/src/db/DBConnection.js

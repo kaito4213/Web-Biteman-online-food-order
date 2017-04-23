@@ -36,7 +36,6 @@ class MyOrder extends React.Component {
       type: 'post',
       dataType: 'json', data: {dishId: DID},
       success: function (json) {
-        debugger;
       }.bind(this),
       error: function (xhr, status, err) {
         debugger;
@@ -59,6 +58,27 @@ class MyOrder extends React.Component {
 
   }
 
+  placeOrder() {
+    let cartItems = this.state.order;
+    let customerID = localStorage.getItem('customerID');
+
+    $.ajax({
+      url: '/placeOrder',
+      type: 'post',
+      dataType: 'json',
+      data: {cartItems: cartItems, customerID: customerID},
+      success: function (json) {
+        debugger;
+      }.bind(this),
+      error: function (xhr, status, err) {
+        debugger;
+        console.log(xhr.responseText);
+        console.log(err);
+      }.bind(this)
+    });
+
+  }
+
   render() {
     return (
       <div>
@@ -66,6 +86,7 @@ class MyOrder extends React.Component {
         <table>
           <OrderTable order={this.state.order} deleteOrder={this.deleteOrder.bind(this)}/>
         </table>
+        <button type = 'button' onClick = {this.placeOrder.bind(this)}>Place</button>
       </div>
 
     )
