@@ -18,7 +18,7 @@ app.post('/deleteMyOrder', function (req, res) {
     res.json({success: result});
   }
 
-  OrderDao.deleteCustomerOrder( dishId, cb);
+  OrderDao.deleteCartOrder(dishId, cb);
 
 });
 
@@ -30,7 +30,7 @@ app.post('/getMyCart', function (req, res) {
     res.json({orderInfo: result});
   }
 
-  OrderDao.getAllOrders(cid, returnAllOrders);
+  OrderDao.getCustomerCartOrders(cid, returnAllOrders);
 });
 
 /**
@@ -156,6 +156,29 @@ app.post('/addFoodtoCart', function (req, res) {
   }
 
   OrderDao.addFoodtoCart(did, cid, rid, price, returnResult);
+});
+
+//place order: move cart items into orders table, then delete cart items by customer id
+app.post('/placeOrder', function (req, res) {
+
+  var cartItems = req.body.cartItems;
+  var cid = req.body.customerID;
+
+  function returnResult(result) {
+
+   // move cart intem to orders
+    var orderNum = result.length;
+
+    for(i=0; i<orderNum; i++){
+
+      function returnInsertedOrder(addToOrdersResult) {
+        console.log('test...');
+      }
+       OrderDao.cartToOrders(Math.floor(Math.random() * 1000), result[i].rid, result[i].sum, result[i].cid, returnInsertedOrder);
+    }
+  }
+
+  OrderDao.placeOrder(cid, returnResult);
 });
 
 
