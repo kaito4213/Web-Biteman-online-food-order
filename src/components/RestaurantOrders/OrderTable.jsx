@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import OrderRow from './OrderRow';
 
 /**
- * Table Display all of the orders
+ * Table Display all of the orders of a restaurant
  */
 class OrderTable extends Component {
 
@@ -13,7 +13,7 @@ class OrderTable extends Component {
   render() {
     let rows = [];
     let rowNum = 1;
-    this.props.orderHistory.forEach((order) => {
+    this.props.restaurantOrders.forEach((order) => {
       rows.push(
         <OrderRow key={rowNum++} orderData={order} onOrderRowClick={(e) => this.props.onOrderRowClick(e)}/>
       );

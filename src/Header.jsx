@@ -31,7 +31,7 @@ class Header extends React.Component {
           <li><Link to="/menu">My Restaurant</Link></li>
         );
         customerOrders = (
-          <li><Link to="/orders">My Customers</Link></li>
+          <li><Link to="/my-customers">My Customers</Link></li>
         );
       }
       header = (<li><a onClick={this.handleLogout}>Log out</a></li>);

@@ -37,7 +37,7 @@ class Login extends React.Component {
           debugger;
           pwdFromDB = json.loginInfo[0].pwd;
           // if logged in, check the password and email account
-          if (inputPwd == pwdFromDB) {
+          if (inputPwd === pwdFromDB) {
             // https://github.com/reactjs/react-router-tutorial/tree/master/lessons/12-navigating
             this.context.router.replace('/home');
             localStorage.setItem('userName', inputEmail);

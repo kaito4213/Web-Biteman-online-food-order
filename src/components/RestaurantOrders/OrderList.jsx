@@ -18,14 +18,13 @@ class OrderList extends Component {
   }
 
   componentDidMount() {
-    // get customer id globally
+    // get restaurant id globally
     let restaurantId = localStorage.getItem('restaurantID');
-
     // get all of the orders associated to this customer
     $.ajax({
       url: '/getRestaurantOrders',
       type: 'post',
-      data: {restaurantID: restaurantId},
+      data: {restaurantId: restaurantId},
       dataType: 'json',
       success: function (json) {
         debugger;

@@ -15,6 +15,27 @@ function getAllOrders(cid, cb) {
   DBConnection.getData(query, [cid], cb);
 }
 
+/**
+ * Get all of the orders comes to this restaurant
+ */
+function getRestaurantOrders(restaurantId, cb) {
+
+  var query = 'SELECT ' +
+    'orders.status, orders.odate, orders.oID, orders.ordertime, ' +
+    'dish.dname, dish.price, ' +
+    'customer.cname, customer. address ' +
+    'FROM cs542.orders AS orders ' +
+    'INNER JOIN cs542.orderdetail AS order_detail ' +
+    'ON orders.oID = order_detail.oID ' +
+    'INNER JOIN cs542.dish AS dish ' +
+    'ON order_detail.dID = dish.dID ' +
+    'LEFT JOIN cs542.customer  AS customer ' +
+    'ON orders.cID = customer.cID ' +
+    'WHERE orders.rID = ? ;';
+
+  DBConnection.getData(query, [restaurantId], cb);
+}
+
 function deleteCustomerOrder(dishId, cb) {
 
   DBConnection.getData('DELETE FROM cart WHERE dID = ?;', [dishId], cb);
@@ -28,7 +49,7 @@ function getCustLoginInfo(email, cb) {
 
 function getRestaurantLoginInfo(email, cb) {
 
-  DBConnection.getData('SELECT pwd FROM restaurant WHERE email = ?;', [email], cb);
+  DBConnection.getData('SELECT pwd, rID FROM restaurant WHERE email = ?;', [email], cb);
 }
 
 function getRestaurantList(cb) {
@@ -95,3 +116,4 @@ exports.getMyOrderHistory = getMyOrderHistory;
 exports.addCustomer = addCustomer;
 exports.updateOrderStatusCustomer = updateOrderStatusCustomer;
 exports.addFoodtoCart = addFoodtoCart;
+exports.getRestaurantOrders = getRestaurantOrders;

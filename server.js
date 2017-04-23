@@ -118,7 +118,13 @@ app.post('/getMyOrderHistory', function (req, res) {
 });
 
 app.post('/getRestaurantOrders', function (req, res) {
-  var restaurantId = req.body.getRestaurantOrders
+  var restaurantId = req.body.restaurantId;
+
+  function getRestaurantOrders(restaurantOrders) {
+    res.json({restaurantOrders: restaurantOrders})
+  }
+
+  OrderDao.getRestaurantOrders(restaurantId, getRestaurantOrders);
 });
 
 //insert new customer into database
