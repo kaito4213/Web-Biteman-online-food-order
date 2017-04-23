@@ -70,6 +70,10 @@ function getRestaurantMenu(rid, cb) {
   DBConnection.getData('SELECT did, dname, description, price FROM DISH WHERE rid = ?;', [rid], cb);
 }
 
+function addFoodtoCart(did,cid,rid,price,cb){
+  DBConnection.insertData('INSERT INTO Cart VALUE (Now(),?,?,?,?);',[did,cid,rid,price], cb);
+}
+
 
 exports.getAllOrders = getAllOrders;
 exports.deleteCustomerOrder = deleteCustomerOrder;
@@ -81,3 +85,4 @@ exports.getRecommendationList = getRecommendationList;
 exports.getMenuForCustomer = getMenuForCustomer;
 exports.getMyOrderHistory = getMyOrderHistory;
 exports.addCustomer = addCustomer;
+exports.addFoodtoCart = addFoodtoCart;

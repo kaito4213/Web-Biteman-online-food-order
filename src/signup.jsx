@@ -35,7 +35,6 @@ class signup extends React.Component {
         }.bind(this)
       });
 
-
     } else {
       this.setState({error: true});
     }

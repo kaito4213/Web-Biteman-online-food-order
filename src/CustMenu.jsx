@@ -32,12 +32,32 @@ class CustMenu extends React.Component {
     });
   }
 
+  //insert selected food to cart
+  addClick(cid, did, price){
+
+    let rid = this.props.params.rid;
+
+    $.ajax({
+      url: '/addFoodtoCart',
+      type: 'post',
+      dataType: 'json',
+      data: {customerId:cid, restaurantId: rid, dishId: did, price: price},
+      success: function (json) {
+      }.bind(this),
+      error: function (xhr, status, err) {
+        debugger;
+        console.log(xhr.responseText);
+        console.log(err);
+      }.bind(this)
+    });
+  }
+
+
   render() {
     return (
       <div>
-        <h1>{this.props.params.rid}</h1>
         <h1>Menu</h1>
-        <MenuTable menu={this.state.customerMenu}/>
+        <MenuTable menu={this.state.customerMenu} addOnclick = {this.addClick.bind(this)}/>
       </div>
     )
   }
@@ -48,8 +68,8 @@ class MenuTable extends React.Component {
   render() {
     let cusionRows = [];
     this.props.menu.forEach(function (cuision) {
-      cusionRows.push(<CuisionRow cuision={cuision} key={cuision.did}/>)
-    });
+      cusionRows.push(<CuisionRow cuision={cuision} key={cuision.did} addOnClick = {this.props.addOnclick.bind(this)}/>)
+    }.bind(this));
 
     return (
       <div>
@@ -61,6 +81,15 @@ class MenuTable extends React.Component {
 }
 /*specify what is shown in each menu row, the price, description....*/
 class CuisionRow extends React.Component {
+
+  handleAddClick(e){
+    let cid = localStorage.getItem('customerID'),
+      did = this.props.cuision.did,
+      price = this.props.cuision.price
+
+    this.props.addOnClick(cid, did, price);
+  }
+
   render() {
     return (
       /*  <row> */
@@ -68,10 +97,10 @@ class CuisionRow extends React.Component {
         <div>
           <h3>{this.props.cuision.dname}
             <span> {this.props.cuision.price}</span>
-            <button type="button">Add</button>
+            <button type="button" onClick = {this.handleAddClick.bind(this)}>Add to cart</button>
           </h3>
         </div>
-        <p>Description: {this.props.cuision.discription}</p>
+        <p>Description: {this.props.cuision.description}</p>
         <hr/>
       </div>
     )

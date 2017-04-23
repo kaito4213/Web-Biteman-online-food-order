@@ -18,7 +18,6 @@ class MyOrder extends React.Component {
       url: '/getMyOrders',
       type: 'get',
       dataType: 'json',
-
       success: function (json) {
         debugger;
         this.setState({order: json.orderInfo});
