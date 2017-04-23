@@ -55,8 +55,9 @@ function getRestaurantLoginInfo(email, cb) {
 
 function getRestaurantList(cb) {
 
-  DBConnection.getData('SELECT rname,rzipcode as zip,type, rid FROM restaurant;', [], cb);
+  DBConnection.getData('SELECT rname as name,rzipcode as zip,type, rid FROM restaurant;', [], cb);
 }
+
 
 function getMyProfile(cid, cb) {
 
@@ -65,7 +66,7 @@ function getMyProfile(cid, cb) {
 
 function getRecommendationList(cb) {
 
-  DBConnection.getData('SELECT rname,rzipcode as zip,type FROM restaurant WHERE rID < 5;', [], cb);
+  DBConnection.getData('SELECT rname as name,rzipcode as zip,type FROM restaurant WHERE rID < 5;', [], cb);
 }
 
 function getMenuForCustomer(rid, cb) {
@@ -112,8 +113,8 @@ function cartToOrders(key, rid, sum, cid, cb) {
 
 }
 
-exports.getCustomerCartOrders = getCustomerCartOrders;//ok.....changename:
-exports.deleteCartOrder = deleteCartOrder;//ok.....changename: add cid
+exports.getCustomerCartOrders = getCustomerCartOrders;//ok
+exports.deleteCartOrder = deleteCartOrder;//ok
 exports.getCustLoginInfo = getCustLoginInfo;//ok
 exports.getRestaurantLoginInfo = getRestaurantLoginInfo;//ok
 exports.getRestaurantList = getRestaurantList;//ok

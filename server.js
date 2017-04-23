@@ -13,12 +13,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 // delete myorder in cart according to the orderID and dishID
 app.post('/deleteMyOrder', function (req, res) {
   var dishId = req.body.dishId;
+  var customerId = req.body.customerId;
 
   function cb(result) {
     res.json({success: result});
   }
 
-  OrderDao.deleteCartOrder(dishId, cb);
+  OrderDao.deleteCartOrder(customerId, dishId, cb);
 
 });
 

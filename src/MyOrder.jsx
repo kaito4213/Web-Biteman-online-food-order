@@ -16,7 +16,6 @@ class MyOrder extends React.Component {
       dataType: 'json',
       data: {customerID : customerID},
       success: function (json) {
-        debugger;
         this.setState({order: json.orderInfo});
       }.bind(this),
 
@@ -30,12 +29,15 @@ class MyOrder extends React.Component {
   }
 
   deleteOrder(DID) {
+    let customerId = localStorage.getItem('customerID')
 
+    debugger;
     $.ajax({
       url: '/deleteMyOrder',
       type: 'post',
-      dataType: 'json', data: {dishId: DID},
+      dataType: 'json', data: {dishId: DID,customerId:customerId },
       success: function (json) {
+        debugger;
       }.bind(this),
       error: function (xhr, status, err) {
         debugger;
