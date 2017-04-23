@@ -33,7 +33,12 @@ app.get('/getMyOrders', function (req, res) {
   OrderDao.getAllOrders(req, res, returnAllOrders);
 });
 
-app.post('/updateOrderStatus', function (req, res) {
+/**
+ * endpoint for a customer to update order status
+ *
+ * @return whether or not the update is successful
+ */
+app.post('/updateOrderStatusCustomer', function (req, res) {
   function isUpdateOrderStatusSuccess(updatedRows) {
     var isUpdateOrderStatusSuccess = updatedRows > 0;
     res.json({isUpdateOrderStatusSuccess: isUpdateOrderStatusSuccess});
@@ -142,15 +147,15 @@ app.post('/getMenuForRestaurant', function (req, res) {
 app.post('/addFoodtoCart', function (req, res) {
 
   var cid = req.body.customerId,
-       rid = req.body.restaurantId,
-       did = req.body.dishId,
-       price = req.body.price;
+    rid = req.body.restaurantId,
+    did = req.body.dishId,
+    price = req.body.price;
 
   function returnResult(result) {
     res.json({result: result});
   }
 
-  OrderDao.addFoodtoCart(did,cid,rid,price, returnResult);
+  OrderDao.addFoodtoCart(did, cid, rid, price, returnResult);
 });
 
 

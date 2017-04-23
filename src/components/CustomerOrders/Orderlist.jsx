@@ -65,7 +65,7 @@ class OrderList extends Component {
           const orderId = this.state.modalState.oid;
           const newOrderStatus = 'cancelled';
           $.ajax({
-            url: '/updateOrderStatus',
+            url: '/updateOrderStatusCustomer',
             type: 'post',
             dataType: 'json',
             data: {orderId: orderId, newOrderStatus: newOrderStatus},
@@ -148,7 +148,6 @@ class OrderList extends Component {
       //Link to comment
     }
 
-    // set state
     this.setState({
       modalState: {
         oid: orderId,

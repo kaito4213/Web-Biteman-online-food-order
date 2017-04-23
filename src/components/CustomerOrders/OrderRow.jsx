@@ -1,23 +1,27 @@
 import React, {Component} from 'react';
+import Constants from '../../shared/Constants';
+
 /**
- * Row to display every order details
+ * Row to display every order details.
+ * Customer can also update order status here.
+ *
+ * status:{placed(cancel), accepted(no operation, accepted), delivered(comment), finished}
  */
 class OrderRow extends Component {
+
   render() {
     let record = this.props.orderData;
-    // status:{placed(cancel), accepted(no operation, accepted), delivered(comment), finished}
-    //
     let btnLabel = null;
-    if (record.status === 'placed') {
+    if (record.status === Constants.orderStatus.ORDER_PLACED) {
       btnLabel = 'cancel';
-    } else if (record.status === 'accepted') {
+    } else if (record.status === Constants.orderStatus.ORDER_ACCEPTED) {
       btnLabel = 'confirm';
-    } else if (record.status === 'delivered') {
+    } else if (record.status === Constants.orderStatus.ORDER_DELIVERED) {
       btnLabel = 'comment'
     } else {
       btnLabel = '';
     }
-    let btn = [];
+    let btn = null;
     if (btnLabel !== '') {
       btn = (
         <button type="button" onClick={() => this.props.onOrderRowClick(record)}>{btnLabel}</button>
