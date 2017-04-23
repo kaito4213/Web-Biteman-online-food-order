@@ -4,7 +4,7 @@ import Home from './Home';
 import {Modal} from 'antd';
 
 /**
- * Order history
+ * Customer's Order history
  * To Do:
  * PROBLEM1: PAGEINATION
  * PROBLEM2: REMOTE DATASOURCE
@@ -15,8 +15,9 @@ import {Modal} from 'antd';
  */
 class OrderRow extends Component {
   render() {
-    let record = this.props.product;
-    // status:{placed(cancel),accepted(confirm),delivered(comment),finished}
+    let record = this.props.orderData;
+    // status:{placed(cancel), accepted(no operation, accepted), delivered(comment), finished}
+    //
     let btnLabel = null;
     if (record.status === 'placed') {
       btnLabel = 'cancel';
@@ -50,12 +51,19 @@ class OrderRow extends Component {
 /**
  * Table Display all of the orders
  */
-class Ordertable extends Component {
+class OrderTable extends Component {
+
+  constructor() {
+    super();
+  }
+
   render() {
     let rows = [];
     let rowNum = 1;
-    this.props.data.forEach((product) => {
-      rows.push(<OrderRow key={rowNum++} product={product} onOrderRowClick={(e) => this.props.onOrderRowClick(e)}/>);
+    this.props.orderHistory.forEach((order) => {
+      rows.push(
+        <OrderRow key={rowNum++} orderData={order} onOrderRowClick={(e) => this.props.onOrderRowClick(e)}/>
+      );
     });
     return (
       <table>
@@ -76,6 +84,11 @@ class Ordertable extends Component {
   }
 }
 
+/**
+ * Component display all of the order related information
+ *
+ * A list of orders + A interactive modal
+ */
 class OrderList extends Component {
   constructor() {
     super();
@@ -92,6 +105,7 @@ class OrderList extends Component {
     // get customer id globally
     let customerId = localStorage.getItem('customerID');
 
+    // get all of the orders associated to this customer
     $.ajax({
       url: '/getMyOrderHistory',
       type: 'post',
@@ -110,26 +124,55 @@ class OrderList extends Component {
     });
   }
 
+  /**
+   * Handle events after user did some operations.
+   */
   handleOk = () => {
     let len = this.state.orderHistory.length;
 
-    if (this.state.modalState.orderOperation === 1) {//placed
+    if (this.state.modalState.orderOperation === 1) {
+      // the user wants to cancel the order
+      // the status of the order should change from placed to cancelled
       for (let row = 0; row < len; row++) {
         if (this.state.orderHistory[row].oid === this.state.modalState.oid) {
           console.log(this.state.modalState.oid);
-          const orderHistory = this.state.orderHistory;
-          orderHistory[row].status = 'cancelled';
-          this.setState({orderHistory,});
-          alert('You have cancelled your order.');
+          // if we want to delete data, we can use post
+          const orderId = this.state.modalState.oid;
+          const newOrderStatus = 'cancelled';
+          $.ajax({
+            url: '/updateOrderStatus',
+            type: 'post',
+            dataType: 'json',
+            data: {orderId: orderId, newOrderStatus: newOrderStatus},
+            success: function (json) {
+              // isUpdateOrderStatusSuccess passed back from back end is a boolean
+              if (json.isUpdateOrderStatusSuccess) {
+                let updatedOrderHistory = this.state.orderHistory.slice(0);
+                updatedOrderHistory[row].status = 'cancelled';
+                this.setState({orderHistory: updatedOrderHistory});
+              } else {
+                // if the code goes here, something wrong when updating the order status
+                // so nothing changed here, but we should let customer know. Not now =)
+              }
+
+            }.bind(this),
+            error: function (xhr, status, err) {
+              debugger;
+              // oop, something bad happened =(
+              console.log(xhr.responseText);
+              console.log(err);
+            }.bind(this)
+          });
+          break;
         }
       }
-    } else if (this.state.modalState.orderOperation === 2) {//accepted
+    } else if (this.state.modalState.orderOperation === 2) {
+      // accepted, what is this?
       for (let row = 0; row < len; row++) {
         if (this.state.orderHistory[row].oid === this.state.modalState.oid) {
           const orderHistory = this.state.orderHistory;
-          orderHistory[row].status = 'delivered';
-          this.setState({orderHistory,});
-          alert('You have confirmed your order.');
+          orderHistory[row].status = 'finished';
+          this.setState({orderHistory: orderHistory});
         }
       }
     }
@@ -138,8 +181,14 @@ class OrderList extends Component {
     });
   };
 
+  /**
+   * Cancel the operation on the pop up modal, so we just close the modal
+   */
   handleCancel = () => {
-    this.setState({modalState: {visible: false}});
+    // let's try not to modify the previous state
+    let updatedModalState = Object.assign({}, this.state.modalState);
+    updatedModalState.visible = false;
+    this.setState({modalState: updatedModalState});
   };
 
   /**
@@ -155,7 +204,6 @@ class OrderList extends Component {
     let modalTitle = '';
     // default show modal
     let isModalVisible = true;
-
 
     if (orderData.status === 'placed') {
       orderOperation = 1;
@@ -191,7 +239,7 @@ class OrderList extends Component {
   render() {
     return (
       <div>
-        <Ordertable data={this.state.orderHistory} onOrderRowClick={(e) => this.showConfirm(e)}/>
+        <OrderTable orderHistory={this.state.orderHistory} onOrderRowClick={(e) => this.showConfirm(e)}/>
         <Modal
           title={this.state.modalState.title}
           visible={this.state.modalState.visible}

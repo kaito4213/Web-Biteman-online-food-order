@@ -1,19 +1,6 @@
-// var webpack = require('webpack');
-// var WebpackDevServer = require('webpack-dev-server');
 var config = require('./webpack.config');
 const OrderDao = require('./src/db/OrderDao');
-//
-// new WebpackDevServer(webpack(config), {
-//   publicPath: config.output.publicPath,
-//   hot: true,
-//   historyApiFallback: true
-// }).listen(3000, 'localhost', function (err, result) {
-//   if (err) {
-//     console.log(err);
-//   }
-//
-//   console.log('Listening at localhost:3000');
-// });
+
 var express = require('express');
 var path = require('path');
 var bodyParser = require('body-parser');
@@ -46,26 +33,36 @@ app.get('/getMyOrders', function (req, res) {
   OrderDao.getAllOrders(req, res, returnAllOrders);
 });
 
-// get passord in order to check the user login
+app.post('/updateOrderStatus', function (req, res) {
+  function isUpdateOrderStatusSuccess(updatedRows) {
+    var isUpdateOrderStatusSuccess = updatedRows > 0;
+    res.json({isUpdateOrderStatusSuccess: isUpdateOrderStatusSuccess});
+  }
+
+  var orderId = req.body.orderId;
+  var newOrderStatus = req.body.newOrderStatus;
+
+  OrderDao.updateOrderStatusCustomer(orderId, newOrderStatus, isUpdateOrderStatusSuccess);
+});
+
+// get password in order to check the user login
 app.post('/getLoginInfo', function (req, res) {
+  var inputEmail = req.body.email;
+  var table = req.body.table;
 
-    var inputEmail = req.body.email;
-    var table = req.body.table;
+  function returnPwd(result) {
+    res.json({loginInfo: result});
+  }
 
-    function returnPwd(result) {
-      res.json({loginInfo: result});
-    }
-
-    if(table == 'customer')
-      OrderDao.getCustLoginInfo(inputEmail, returnPwd);
-    else
-      OrderDao.getRestaurantLoginInfo(inputEmail, returnPwd);
-  })
+  if (table === 'customer')
+    OrderDao.getCustLoginInfo(inputEmail, returnPwd);
+  else
+    OrderDao.getRestaurantLoginInfo(inputEmail, returnPwd);
+})
 
 //get all restaurant rows
 app.get('/getRestaurantList', function (req, res) {
   function returnAllRestaurants(result) {
-    //console.log(result);
     res.json({restaurantList: result});
   }
 
@@ -79,10 +76,9 @@ app.post('/getMyProfile', function (req, res) {
 
   function returnMyProfile(result) {
     res.json({profile: result});
-
   }
 
-  OrderDao.getMyProfile( customerID, returnMyProfile);
+  OrderDao.getMyProfile(customerID, returnMyProfile);
 });
 
 //get recommend restaurant
@@ -99,7 +95,6 @@ app.post('/getMenuForCustomer', function (req, res) {
   var rid = req.body.restaurantId;
 
   function returnMenuForCustomer(result) {
-    //console.log(result);
     res.json({MenuForCustomer: result});
   }
 
@@ -114,7 +109,7 @@ app.post('/getMyOrderHistory', function (req, res) {
     res.json({orderHistory: result});
   }
 
-  OrderDao.getMyOrderHistory( customerID, returnOrderHistory);
+  OrderDao.getMyOrderHistory(customerID, returnOrderHistory);
 });
 
 //insert new customer into database
@@ -126,10 +121,10 @@ app.post('/addCustomer', function (req, res) {
   var password = req.body.password;
 
   function returnResult(result) {
-    res.json({success:result});
+    res.json({success: result});
   }
 
-  OrderDao.addCustomer( address,zipcode,userName,password,userEmail, returnResult);
+  OrderDao.addCustomer(address, zipcode, userName, password, userEmail, returnResult);
 });
 
 //get menu for restaurant user
@@ -140,7 +135,7 @@ app.post('/getMenuForRestaurant', function (req, res) {
     res.json({restaurantMenu: result});
   }
 
-  OrderDao.getRestaurantMenu( restaurantID, returnMenuForRestaurant);
+  OrderDao.getRestaurantMenu(restaurantID, returnMenuForRestaurant);
 });
 
 
