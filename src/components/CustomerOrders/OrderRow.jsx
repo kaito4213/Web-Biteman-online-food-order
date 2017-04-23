@@ -5,7 +5,7 @@ import Constants from '../../shared/Constants';
  * Row to display every order details.
  * Customer can also update order status here.
  *
- * status:{placed(cancel), accepted(no operation, accepted), delivered(comment), finished}
+ * status:{placed(cancel), accepted(no operation, accepted), delivered(no operation, delivered), finished}
  */
 class OrderRow extends Component {
 
@@ -13,11 +13,11 @@ class OrderRow extends Component {
     let record = this.props.orderData;
     let btnLabel = null;
     if (record.status === Constants.orderStatus.ORDER_PLACED) {
-      btnLabel = 'cancel';
+      btnLabel = Constants.CANCEL;
     } else if (record.status === Constants.orderStatus.ORDER_ACCEPTED) {
-      btnLabel = 'confirm';
+      btnLabel = Constants.ACCEPTED;
     } else if (record.status === Constants.orderStatus.ORDER_DELIVERED) {
-      btnLabel = 'comment'
+      btnLabel = Constants.DELIVERED;
     } else {
       btnLabel = '';
     }
