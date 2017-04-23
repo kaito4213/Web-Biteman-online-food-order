@@ -20,14 +20,14 @@ class User extends Component {
     } else {// successfully logged in as customer
       return (
         <div>
-          <div>
+          <table>
             <ul id="usidebar">
               <p>My account:</p>
               <li><Link to="/user/orderlist">Orders</Link></li>
               <li><Link to="/user/profile">Profile</Link></li>
               <li><Link to="/user/myOrder">Cart</Link></li>
             </ul>
-          </div>
+          </table>
           <table id="utable">
             {this.props.children}
           </table>
