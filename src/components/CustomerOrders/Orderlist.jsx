@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router';
-import Home from './Home';
 import {Modal} from 'antd';
+import OrderTable from './OrderTable';
 
 /**
  * Customer's Order history
@@ -9,80 +8,6 @@ import {Modal} from 'antd';
  * PROBLEM1: PAGEINATION
  * PROBLEM2: REMOTE DATASOURCE
  */
-
-/**
- * Row to display every order details
- */
-class OrderRow extends Component {
-  render() {
-    let record = this.props.orderData;
-    // status:{placed(cancel), accepted(no operation, accepted), delivered(comment), finished}
-    //
-    let btnLabel = null;
-    if (record.status === 'placed') {
-      btnLabel = 'cancel';
-    } else if (record.status === 'accepted') {
-      btnLabel = 'confirm';
-    } else if (record.status === 'delivered') {
-      btnLabel = 'comment'
-    } else {
-      btnLabel = '';
-    }
-    let btn = [];
-    if (btnLabel !== '') {
-      btn = (
-        <button type="button" onClick={() => this.props.onOrderRowClick(record)}>{btnLabel}</button>
-      )
-    }
-    return (
-      <tr>
-        <td>{record.oid}</td>
-        <td>{record.name}</td>
-        <td>{record.odate}</td>
-        <td>{record.ordertime}</td>
-        <td>{record.price}</td>
-        <td>{record.status}</td>
-        <td>{btn}</td>
-      </tr>
-    );
-  }
-}
-
-/**
- * Table Display all of the orders
- */
-class OrderTable extends Component {
-
-  constructor() {
-    super();
-  }
-
-  render() {
-    let rows = [];
-    let rowNum = 1;
-    this.props.orderHistory.forEach((order) => {
-      rows.push(
-        <OrderRow key={rowNum++} orderData={order} onOrderRowClick={(e) => this.props.onOrderRowClick(e)}/>
-      );
-    });
-    return (
-      <table>
-        <thead>
-        <tr>
-          <th>Order ID</th>
-          <th>Restaurant</th>
-          <th>Data</th>
-          <th>Time</th>
-          <th>Total price</th>
-          <th>Status</th>
-          <th>Operation</th>
-        </tr>
-        </thead>
-        <tbody>{rows}</tbody>
-      </table>
-    );
-  }
-}
 
 /**
  * Component display all of the order related information

@@ -9,7 +9,7 @@ import Home from './Home';
 import Help from './Help';
 
 import User from './User';
-import Orderlist from './Orderlist';
+import OrderList from './components/CustomerOrders/Orderlist';
 import Profile from './Profile';
 import Reslist from './Reslist';
 import Reclist from './Reclist';
@@ -39,7 +39,7 @@ render(
         <Route path='/custmenu/:rid' component={CustMenu}/>
 
         <Route path='user' component={User}>
-          <Route path='orderlist' component={Orderlist}/>
+          <Route path='orderlist' component={OrderList}/>
           <Route path='profile' component={Profile}/>
           <Route path='myOrder' component={MyOrder}/>
         </Route>
