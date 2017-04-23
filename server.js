@@ -12,25 +12,25 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // delete myorder in cart according to the orderID and dishID
 app.post('/deleteMyOrder', function (req, res) {
-  var orderId = req.body.orderId;
   var dishId = req.body.dishId;
 
   function cb(result) {
     res.json({success: result});
   }
 
-  OrderDao.deleteCustomerOrder(orderId, dishId, cb);
+  OrderDao.deleteCustomerOrder( dishId, cb);
 
 });
 
-// endpoint to get all of the orders of a customer or merchant
-app.get('/getMyOrders', function (req, res) {
+// endpoint to get all of the orders of a customer
+app.post('/getMyCart', function (req, res) {
+  var cid = req.body.customerID;
+
   function returnAllOrders(result) {
     res.json({orderInfo: result});
   }
 
-  // todo: should not pass req & res to DAO
-  OrderDao.getAllOrders(req, res, returnAllOrders);
+  OrderDao.getAllOrders(cid, returnAllOrders);
 });
 
 /**

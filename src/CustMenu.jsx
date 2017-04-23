@@ -94,19 +94,17 @@ class CuisionRow extends React.Component {
     return (
       /*  <row> */
       <div>
-        <div>
-          <h3>{this.props.cuision.dname}
-            <span> {this.props.cuision.price}</span>
-            <button type="button" onClick = {this.handleAddClick.bind(this)}>Add to cart</button>
-          </h3>
-        </div>
+        <tr>
+          <td>{this.props.cuision.dname}</td>
+          <td> {this.props.cuision.price}</td>
+          <button type="button" onClick = {this.handleAddClick.bind(this)}>Add to cart</button>
+        </tr>
         <p>Description: {this.props.cuision.description}</p>
         <hr/>
       </div>
     )
   }
 }
-
 
 export default CustMenu;
 
