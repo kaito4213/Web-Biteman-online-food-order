@@ -6,17 +6,18 @@ const DBConnection = require('./DBConnection');
  * @param res
  * @param cb callback function contains query result
  */
-function getAllOrders(req, res, cb) {
-  var query = 'SELECT joinOrderDish.oid, joinOrderDish.did, orders.rid, price, num AS quantity, dname ' +
-    'FROM cs542.ORDERS orders, cs542.DISH dishes, cs542.contains joinOrderDish ' +
-    'WHERE joinOrderDish.did = dishes.did AND joinOrderDish.oid = orders.oid;';
+function getAllOrders(cid, cb) {
+  var query = 'select cart.did,dname,restaurant.name as rname,count(cart.did) as num, sum(cart.price) as total '+
+              'from cart, dish, restaurant '+
+              'where cid = ? and cart.did = dish.did and dish.rid = restaurant.rid '+
+              'group by cart.did; ';
 
-  DBConnection.getData(query, [], cb);
+  DBConnection.getData(query, [cid], cb);
 }
 
-function deleteCustomerOrder(orderId, dishId, cb) {
+function deleteCustomerOrder(dishId, cb) {
 
-  DBConnection.getData('DELETE FROM cs542.contains WHERE oid = ? AND dID = ?;', [orderId, dishId], cb);
+  DBConnection.getData('DELETE FROM cart WHERE dID = ?;', [dishId], cb);
 
 }
 
