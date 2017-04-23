@@ -3,7 +3,7 @@ import {Modal} from 'antd';
 import OrderTable from './OrderTable';
 
 /**
- * Component displays all of the orders of a customer
+ * Component displays all of a restaurant's orders
  *
  * A list of orders + A interactive modal
  */
@@ -11,7 +11,7 @@ class OrderList extends Component {
   constructor() {
     super();
     this.state = {
-      orderHistory: [],
+      restaurantOrders: [],
       modalState: {visible: false}
     };
     this.showConfirm = this.showConfirm.bind(this);
@@ -19,18 +19,18 @@ class OrderList extends Component {
 
   componentDidMount() {
     // get customer id globally
-    let customerId = localStorage.getItem('customerID');
+    let restaurantId = localStorage.getItem('restaurantID');
 
     // get all of the orders associated to this customer
     $.ajax({
-      url: '/getMyOrderHistory',
+      url: '/getRestaurantOrders',
       type: 'post',
-      data: {customerID: customerId},
+      data: {restaurantID: restaurantId},
       dataType: 'json',
       success: function (json) {
         debugger;
-        let myOrderHistory = json.orderHistory;
-        this.setState({orderHistory: myOrderHistory});
+        let restaurantOrders = json.restaurantOrders;
+        this.setState({restaurantOrders: restaurantOrders});
       }.bind(this),
       error: function (xhr, status, err) {
         debugger;
@@ -44,13 +44,13 @@ class OrderList extends Component {
    * Handle events after user did some operations.
    */
   handleOk = () => {
-    let len = this.state.orderHistory.length;
+    let len = this.state.restaurantOrders.length;
 
     if (this.state.modalState.orderOperation === 1) {
       // the user wants to cancel the order
       // the status of the order should change from placed to cancelled
       for (let row = 0; row < len; row++) {
-        if (this.state.orderHistory[row].oid === this.state.modalState.oid) {
+        if (this.state.restaurantOrders[row].oid === this.state.modalState.oid) {
           console.log(this.state.modalState.oid);
           // if we want to delete data, we can use post
           const orderId = this.state.modalState.oid;
@@ -63,9 +63,9 @@ class OrderList extends Component {
             success: function (json) {
               // isUpdateOrderStatusSuccess passed back from back end is a boolean
               if (json.isUpdateOrderStatusSuccess) {
-                let updatedOrderHistory = this.state.orderHistory.slice(0);
+                let updatedOrderHistory = this.state.restaurantOrders.slice(0);
                 updatedOrderHistory[row].status = 'cancelled';
-                this.setState({orderHistory: updatedOrderHistory});
+                this.setState({restaurantOrders: updatedOrderHistory});
               } else {
                 // if the code goes here, something wrong when updating the order status
                 // so nothing changed here, but we should let customer know. Not now =)
@@ -85,10 +85,10 @@ class OrderList extends Component {
     } else if (this.state.modalState.orderOperation === 2) {
       // accepted, what is this?
       for (let row = 0; row < len; row++) {
-        if (this.state.orderHistory[row].oid === this.state.modalState.oid) {
-          const orderHistory = this.state.orderHistory;
-          orderHistory[row].status = 'finished';
-          this.setState({orderHistory: orderHistory});
+        if (this.state.restaurantOrders[row].oid === this.state.modalState.oid) {
+          const restaurantOrders = this.state.restaurantOrders;
+          restaurantOrders[row].status = 'finished';
+          this.setState({restaurantOrders: restaurantOrders});
         }
       }
     }
@@ -154,7 +154,7 @@ class OrderList extends Component {
   render() {
     return (
       <div>
-        <OrderTable orderHistory={this.state.orderHistory} onOrderRowClick={(e) => this.showConfirm(e)}/>
+        <OrderTable restaurantOrders={this.state.restaurantOrders} onOrderRowClick={(e) => this.showConfirm(e)}/>
         <Modal
           title={this.state.modalState.title}
           visible={this.state.modalState.visible}

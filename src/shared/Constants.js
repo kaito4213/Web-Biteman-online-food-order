@@ -11,5 +11,7 @@ module.exports = {
   },
   CANCEL: 'cancel',
   ACCEPTED: 'accepted',
-  DELIVERED: 'delivered'
+  DELIVERED: 'delivered',
+  CUSTOMER: 'customer',
+  RESTAURANT: 'restaurant'
 };
