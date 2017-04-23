@@ -120,8 +120,59 @@ app.post('/getMyOrderHistory', function (req, res) {
 app.post('/getRestaurantOrders', function (req, res) {
   var restaurantId = req.body.restaurantId;
 
-  function getRestaurantOrders(restaurantOrders) {
-    res.json({restaurantOrders: restaurantOrders})
+  function getRestaurantOrders(restaurantOrdersData) {
+    var restaurantOrders = {};
+    var orderDetails = [];
+    var customerDetails = [];
+    // this is the raw data, we want to organize them by order id
+    if (restaurantOrdersData === undefined || restaurantOrdersData.length === 0) {
+      res.json({restaurantOrders: restaurantOrders, orderDetails: orderDetails})
+    } else {
+      // {
+      //  orderId : {
+      //
+      //        dishName, dishPrice
+      //      }
+      //
+      // }
+      // []
+      for (var index = 0; index < restaurantOrdersData.length; index++) {
+        var orderId = restaurantOrdersData[index].orderId;
+        if(restaurantOrders.hasOwnProperty(orderId)) {
+
+        } else {
+
+        }
+      }
+      restaurantOrdersData.forEach(function (orderData, index) {
+        var orderId = orderData.orderId;
+
+        restaurantOrders.push({
+          orderId: orderData.orderId,
+          orderDate: orderData.orderDate,
+          orderStatus: orderData.orderStatus,
+          orderTime: orderData.orderTime,
+          totalPrice: orderData.totalPrice
+        });
+        orderDetails.push({
+          dishName: orderData.dishName,
+          dishPrice: orderData.dishPrice
+        });
+        customerDetails.push({
+          customerAddress: orderData.customerAddress,
+          customerName: orderData.customerName
+        });
+      });
+    }
+    res.json(
+      {
+        restaurantOrdersData: {
+          restaurantOrders: restaurantOrders,
+          orderDetails: orderDetails,
+          customerDetails: customerDetails
+        }
+      }
+    );
   }
 
   OrderDao.getRestaurantOrders(restaurantId, getRestaurantOrders);
