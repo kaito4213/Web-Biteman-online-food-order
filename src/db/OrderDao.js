@@ -21,9 +21,9 @@ function getCustomerCartOrders(cid, cb) {
 function getRestaurantOrders(restaurantId, cb) {
 
   var query = 'SELECT ' +
-    'orders.status, orders.odate, orders.oID, orders.ordertime, ' +
-    'dish.dname, dish.price, ' +
-    'customer.cname, customer. address ' +
+    'orders.status AS orderStatus, orders.odate AS orderDate, orders.oID AS orderId, orders.otime AS orderTime, orders.sum AS totalPrice, ' +
+    'dish.dname AS dishName, dish.price AS dishPrice, ' +
+    'customer.cname AS customerName, customer.address AS customerAddress ' +
     'FROM cs542.orders AS orders ' +
     'INNER JOIN cs542.orderdetail AS order_detail ' +
     'ON orders.oID = order_detail.oID ' +

@@ -9,6 +9,7 @@ module.exports = {
     ORDER_PLACED: 'placed',
     ORDER_DELIVERED: 'delivered'
   },
+  localStorageKeys: {},
   CANCEL: 'cancel',
   ACCEPTED: 'accepted',
   DELIVERED: 'delivered',
