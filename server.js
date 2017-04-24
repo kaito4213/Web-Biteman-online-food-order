@@ -172,22 +172,50 @@ app.post('/addFoodtoCart', function (req, res) {
 //place order: move cart items into orders table, then delete cart items by customer id
 app.post('/placeOrder', function (req, res) {
 
-  var cartItems = req.body.cartItems;
   var cid = req.body.customerID;
 
   function returnResult(result) {
-
-   // move cart intem to orders
+    var status1 = 0; //check if insert data to order table is done
+    // move cart intem to orders
     var orderNum = result.length;
 
     for(i=0; i<orderNum; i++){
+      if(i == orderNum){status1 = 1;}
 
       function returnInsertedOrder(addToOrdersResult) {
-        console.log('test...');
+        //res.json({result: addToOrdersResult});
+        var orderId = addToOrdersResult.insertId;
+
+       function returnAllOrderDetail(orderDetails) {
+         var orderDetailNum = orderDetails.length;
+         var status2 = 0; //check if insert data to orderDetail table is done;
+
+         for(j = 0; j<orderDetailNum; j++){
+           if(j == orderDetailNum){status2 = 1;}
+
+           function returnEachOrderDetail(eachOrderDetail){
+
+             //when finished insert data into two tables, empty cart
+             if(status1 && status2){
+               console.log('finished')
+               function returnFinishedSign(){
+                 //put req here;
+               }
+               OrderDao.emptyCart(cid, returnFinishedSign);
+             }
+           }
+
+           OrderDao.insertEachRowInOrderDetail(orderDetails[j].oid,orderDetails[j].did, orderDetails[j].num,returnEachOrderDetail)
+
+         }
+        }
+        OrderDao.insertOrderDetails(cid, orderId,returnAllOrderDetail);
       }
-       OrderDao.cartToOrders(Math.floor(Math.random() * 1000), result[i].rid, result[i].sum, result[i].cid, returnInsertedOrder);
+      OrderDao.cartToOrders(result[i].rid, result[i].sum, result[i].cid, returnInsertedOrder);
     }
+
   }
+
 
   OrderDao.placeOrder(cid, returnResult);
 });
