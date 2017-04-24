@@ -17,6 +17,12 @@ const Menu = React.createClass({
         filterable: true
       },
       {
+        key:'thumbnail',
+        name:'Thumbnail',
+        width:100,
+        editable: true
+      },
+      {
         key: 'did',
         name: 'DID',
         width: 80,
