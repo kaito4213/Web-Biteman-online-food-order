@@ -1,0 +1,30 @@
+#menu {
+    padding-top: 100px;
+    padding-bottom: 100px;
+}
+
+.parallax-section {
+    background-attachment: fixed !important;
+    background-size: cover !important;
+}
+
+/*customer menu page*/
+
+.addFood{
+    background-color:#44c767;
+    -moz-border-radius:18px;
+    -webkit-border-radius:18px;
+    border-radius:18px;
+    border:0px solid #18ab29;
+    display:inline-block;
+    cursor:pointer;
+    color:#ffffff;
+    font-family:Arial;
+    font-size:12px;
+    padding:4px 15px;
+}
+
+
+.jiaoyan{
+    color:red;
+}

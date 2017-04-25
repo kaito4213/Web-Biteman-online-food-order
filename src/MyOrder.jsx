@@ -83,12 +83,21 @@ class MyOrder extends React.Component {
 
   render() {
     return (
-      <div>
-        <h1>MY Cart</h1>
-        <table>
-          <OrderTable order={this.state.order} deleteOrder={this.deleteOrder.bind(this)}/>
+      <div className="cartTable">
+        <div className="myCart" >MY Cart</div>
+        <table className="table table-striped">
+          <thead>
+          <tr>
+            <th>Food</th>
+            <th>Restaurant</th>
+            <th>quantity</th>
+            <th>Price</th>
+            <th>Operation</th>
+          </tr>
+          </thead>
+            <OrderTable order={this.state.order} deleteOrder={this.deleteOrder.bind(this)}/>
         </table>
-        <button type = 'button' onClick = {this.placeOrder.bind(this)}>Place</button>
+        <button className="placeOrder" type = 'button' onClick = {this.placeOrder.bind(this)}>Place</button>
       </div>
 
     )
@@ -133,8 +142,9 @@ class OrderRow extends React.Component {
           <td>{this.props.order.dname} </td>
           <td> {this.props.order.rname}</td>
           <td> {this.props.order.num}</td>
-          <td> {this.props.order.total}</td>
-          <button type="button" value={this.props.key} onClick={this.handleDeleteOrder.bind(this)}>Delete</button>
+          <td> {this.props.order.total}$</td>
+          <td><button className="deleteCart"  type="button" value={this.props.key} onClick={this.handleDeleteOrder.bind(this)}>Delete</button>
+        </td>
       </tr>
     )
   }

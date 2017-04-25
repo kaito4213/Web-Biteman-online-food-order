@@ -55,10 +55,17 @@ class CustMenu extends React.Component {
 
   render() {
     return (
-      <div>
-        <h1>Menu</h1>
-        <MenuTable menu={this.state.customerMenu} addOnclick = {this.addClick.bind(this)}/>
-      </div>
+      <section id="menu" className="parallax-section">
+        <div className="container">
+            <div className="col-md-offset-2 col-md-8 col-sm-12 text-center">
+               <h1 className="heading">Special  Menu</h1>
+               <hr/>
+            </div>
+
+            <MenuTable menu={this.state.customerMenu} addOnclick = {this.addClick.bind(this)}/>
+        </div>
+      </section>
+
     )
   }
 }
@@ -93,15 +100,14 @@ class CuisionRow extends React.Component {
   render() {
     return (
       /*  <row> */
-      <div>
-        <tr>
-          <td>{this.props.cuision.dname}</td>
-          <td> {this.props.cuision.price}</td>
-          <button type="button" onClick = {this.handleAddClick.bind(this)}>Add to cart</button>
-        </tr>
-        <p>Description: {this.props.cuision.description}</p>
-        <hr/>
-      </div>
+        <div className="col-md-6 col-sm-6">
+          <h4>{this.props.cuision.dname}··············<span>{this.props.cuision.price}$··············</span>
+            <span>
+            <button className="addFood" type="button" onClick = {this.handleAddClick.bind(this)}>add</button>
+            </span>
+          </h4>
+          <h5>Description: {this.props.cuision.description}<br/><span><br/></span></h5>
+          </div>
     )
   }
 }
