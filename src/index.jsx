@@ -9,7 +9,8 @@ import Home from './Home';
 import Help from './Help';
 
 import User from './User';
-import Orderlist from './Orderlist';
+import CustomerOrderList from './components/CustomerOrders/OrderList';
+import RestaurantOrderList from './components/RestaurantOrders/OrderList';
 import Profile from './Profile';
 import Reslist from './Reslist';
 import Reclist from './Reclist';
@@ -37,17 +38,20 @@ render(
         <Route path='/help' component={Help}/>
 
         <Route path='/custmenu/:rid' component={CustMenu}/>
+
         <Route path='user' component={User}>
-          <Route path='orderlist' component={Orderlist}/>
+          <Route path='orderlist' component={CustomerOrderList}/>
           <Route path='profile' component={Profile}/>
           <Route path='myOrder' component={MyOrder}/>
         </Route>
+
         <Route path='res' component={Res}>
           <Route path='reslist' component={Reslist}/>
           <Route path='reclist' component={Reclist}/>
         </Route>
 
         <Route path='/menu' component={Menu}/>
+        <Route path='/my-customers' component={RestaurantOrderList}/>
 
       </Route>
     </Router>

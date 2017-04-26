@@ -11,7 +11,6 @@ import './css/antd.scss';
  * 2.link within one row(similar to Orderlist)
  */
 
-
 class ResRow extends Component {
   render() {
     return (
@@ -35,7 +34,7 @@ class ResTable extends Component {
       rows.push(<ResRow product={product} key={product.name} onClick={(e)=>this.props.onClick(e)}/>);
     });
     return (
-      <table>
+      <table className="table table-striped">
         <thead>
         <tr>
           <th>Name</th>
@@ -106,22 +105,10 @@ class FilterableProductTable extends Component {
   }
 }
 
-var data = [];
-
-for (let i = 0; i < 20; i++) {
-  data.push({
-    rid: i,
-    zip: i,
-    name: 'Pho' + i,
-    type: (i % 2) ? 'Asian' : 'French',
-    durl: i,
-  });
-}
-
 class Reslist extends Component {
   render() {
     return (
-      <FilterableProductTable products={data} onClick={(e)=>this.props.onClick(e)}/>
+      <FilterableProductTable products={this.props.restaurantList} onClick={(e)=>this.props.onClick(e)}/>
     )
   }
 }

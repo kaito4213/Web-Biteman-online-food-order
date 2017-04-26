@@ -5,59 +5,67 @@ import React from 'react';
  *
  * @type {*[]}
  */
-var MENU = [
-  {
-    did: '1',
-    rid: '1',
-    price: '$49.99',
-    dname: 'Pad Thai',
-    discription: 'Chicken, and shrimp; stir-fried with rice noodles, egg, scallions, bean sprouts, and ground peanuts.'
-  },
-  {
-    did: '2',
-    rid: '1',
-    price: '$49.99',
-    dname: 'crab rangoon',
-    discription: 'Chicken, and shrimp; stir-fried with rice noodles, egg, scallions, bean sprouts, and ground peanuts.'
-  },
-  {
-    did: '3',
-    rid: '1',
-    price: '$49.99',
-    dname: 'downpling',
-    discription: 'Chicken, and shrimp; stir-fried with rice noodles, egg, scallions, bean sprouts, and ground peanuts.'
-  },
-  {
-    did: '4',
-    rid: '1',
-    price: '$49.99',
-    dname: 'noodle',
-    discription: 'Chicken, and shrimp; stir-fried with rice noodles, egg, scallions, bean sprouts, and ground peanuts.'
-  },
-  {
-    did: '5',
-    rid: '1',
-    price: '$49.99',
-    dname: 'fried rice',
-    discription: 'Chicken, and shrimp; stir-fried with rice noodles, egg, scallions, bean sprouts, and ground peanuts.'
-  },
-  {
-    did: '6',
-    rid: '1',
-    price: '$49.99',
-    dname: 'chicken wings',
-    discription: 'Chicken, and shrimp; stir-fried with rice noodles, egg, scallions, bean sprouts, and ground peanuts.'
-  }
-];
+
 /*this is the parent of menu page*/
 class CustMenu extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {customerMenu: []};
+  }
+
+  componentDidMount() {
+    $.ajax({
+      url: '/getMenuForCustomer',
+      type: 'post',
+      data: {restaurantId: this.props.params.rid},
+      dataType: 'json',
+      success: function (json) {
+        let customerMenu = json.MenuForCustomer;
+        this.setState({customerMenu: customerMenu});
+      }.bind(this),
+      error: function (xhr, status, err) {
+        debugger;
+        console.log(xhr.responseText);
+        console.log(err);
+      }.bind(this)
+    });
+  }
+
+  //insert selected food to cart
+  addClick(cid, did, price){
+
+    let rid = this.props.params.rid;
+
+    $.ajax({
+      url: '/addFoodtoCart',
+      type: 'post',
+      dataType: 'json',
+      data: {customerId:cid, restaurantId: rid, dishId: did, price: price},
+      success: function (json) {
+      }.bind(this),
+      error: function (xhr, status, err) {
+        debugger;
+        console.log(xhr.responseText);
+        console.log(err);
+      }.bind(this)
+    });
+  }
+
+
   render() {
     return (
-      <div>
-        <h1>{this.props.params.rid}</h1>
-        <h1>The Menu</h1>
-        <MenuTable menu={MENU}/>
-      </div>
+      <section id="menu" className="parallax-section">
+        <div className="container">
+            <div className="col-md-offset-2 col-md-8 col-sm-12 text-center">
+               <h1 className="heading">Special  Menu</h1>
+               <hr/>
+            </div>
+
+            <MenuTable menu={this.state.customerMenu} addOnclick = {this.addClick.bind(this)}/>
+        </div>
+      </section>
+
     )
   }
 }
@@ -65,38 +73,44 @@ class CustMenu extends React.Component {
 /*get each row shown in menu table*/
 class MenuTable extends React.Component {
   render() {
-    var cuisionRows = []
+    let cusionRows = [];
     this.props.menu.forEach(function (cuision) {
-      cuisionRows.push(<CuisionRow cuision={cuision} key={cuision.did}/>)
-    })
+      cusionRows.push(<CuisionRow cuision={cuision} key={cuision.did} addOnClick = {this.props.addOnclick.bind(this)}/>)
+    }.bind(this));
 
     return (
       <div>
-        <tbody>{cuisionRows}</tbody>
+        <tbody>{cusionRows}</tbody>
       </div>
 
     )
   }
 }
-/*specify what is shown in each menu row, the price, discription....*/
+/*specify what is shown in each menu row, the price, description....*/
 class CuisionRow extends React.Component {
+
+  handleAddClick(e){
+    let cid = localStorage.getItem('customerID'),
+      did = this.props.cuision.did,
+      price = this.props.cuision.price
+
+    this.props.addOnClick(cid, did, price);
+  }
+
   render() {
     return (
       /*  <row> */
-      <div>
-        <div>
-          <h3>{this.props.cuision.dname}
-            <span> {this.props.cuision.price}</span>
-            <button type="button">Add</button>
-          </h3>
-        </div>
-        <p>Description: {this.props.cuision.discription}</p>
-        <hr></hr>
-      </div>
+        <div className="col-md-6 col-sm-6">
+          <h4>{this.props.cuision.dname}··············<span>{this.props.cuision.price}$··············</span>
+            <span>
+            <button className="addFood" type="button" onClick = {this.handleAddClick.bind(this)}>add</button>
+            </span>
+          </h4>
+          <h5>Description: {this.props.cuision.description}<br/><span><br/></span></h5>
+          </div>
     )
   }
 }
-
 
 export default CustMenu;
 

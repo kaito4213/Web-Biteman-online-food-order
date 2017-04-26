@@ -17,7 +17,7 @@ import Reclist from './Reclist';
 class Res extends Component {
   constructor() {
     super();
-    this.state = {};
+    this.state = {restaurantList: []};
     this.handleClick = this.handleClick.bind(this);
   }
 
@@ -26,11 +26,31 @@ class Res extends Component {
     this.context.router.replace(url);
   }
 
+  componentDidMount() {
+    //
+    $.ajax({
+      url: '/getRestaurantList',
+      type: 'get',
+      dataType: 'json',
+      success: function (json) {
+        //console.log(json);
+        debugger;
+        let restaurantList = json.restaurantList;
+        this.setState({restaurantList});
+      }.bind(this),
+      error: function (xhr, status, err) {
+        debugger;
+        console.log(xhr.responseText);
+        console.log(err);
+      }.bind(this)
+    });
+  }
+
   render() {
     return (
       <div className="res-page">
         <div>
-          <Reslist onClick={(e) =>this.handleClick(e)}/>
+          <Reslist restaurantList={this.state.restaurantList} onClick={(e) =>this.handleClick(e)}/>
         </div>
         <div>
           <h1>Recommond</h1>

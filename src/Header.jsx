@@ -18,17 +18,23 @@ class Header extends React.Component {
 
     let header = null;
     let userpage = null;
+    let customerOrders = null;
 
     if (!localStorage.getItem('userName')) {
       header = <li><Link to="/login">Log in</Link></li>
       userpage = <li></li>
     } else {
-      if (localStorage.getItem('type') == 'customer') {
-        userpage = <li><Link to="/user">My Orders</Link></li>
+      if (localStorage.getItem('type') === 'customer') {
+        userpage = (<li><Link to="/user">My Orders</Link></li>);
       } else {
-        userpage = <li><Link to="/menu">My Restuarant</Link></li>
+        userpage = (
+          <li><Link to="/menu">My Restaurant</Link></li>
+        );
+        customerOrders = (
+          <li><Link to="/my-customers">My Customers</Link></li>
+        );
       }
-      header = <li><a onClick={this.handleLogout}>Log out</a></li>
+      header = (<li><a onClick={this.handleLogout}>Log out</a></li>);
     }
 
     return (
@@ -40,6 +46,7 @@ class Header extends React.Component {
                 <li><Link to="/home">Home</Link></li>
                 <li><Link to="/res">Restaurant</Link></li>
                 {userpage}
+                {customerOrders}
                 {header}
               </ul>
             </nav>

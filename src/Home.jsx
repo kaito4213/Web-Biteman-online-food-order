@@ -16,7 +16,7 @@ class Home extends Component {
     let content = null;
     if (!localStorage.getItem('userName')) {
       content = <div><Login/>
-        <button onClick={this.handleClick.bind(this)} type="button">ign up now</button>
+        <button onClick={this.handleClick.bind(this)} type="button">sign up now</button>
       </div>
     } else {
       let type = localStorage.getItem('type');
@@ -29,6 +29,7 @@ class Home extends Component {
     return (
       <div className="center jumbotron">
         <h1>Welcome to Biteman!</h1>
+        <div className="jiaoyan">jiaoyan</div>
         <h2>
           This is the home page for the
           <a href="http://www.nba.com"> Biteman </a>

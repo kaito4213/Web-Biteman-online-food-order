@@ -6,19 +6,151 @@ const DBConnection = require('./DBConnection');
  * @param res
  * @param cb callback function contains query result
  */
-function getAllOrders(req, res, cb) {
-  var query = 'SELECT joinOrderDish.oid, joinOrderDish.did, orders.rid, price, num AS quantity, dname ' +
-    'FROM cs542.ORDERS orders, cs542.DISH dishes, cs542.contains joinOrderDish ' +
-    'WHERE joinOrderDish.did = dishes.did AND joinOrderDish.oid = orders.oid;';
+function getCustomerCartOrders(cid, cb) {
+  var query = 'select cart.did,dname,rname,count(cart.did) as num, sum(cart.price) as total ' +
+    'from cart, dish, restaurant ' +
+    'where cid = ? and cart.did = dish.did and dish.rid = restaurant.rid ' +
+    'group by cart.did; ';
 
-  DBConnection.getData(query, [], cb);
+  DBConnection.getData(query, [cid], cb);
 }
 
-function deleteCustomerOrder(orderId, dishId, cb) {
+/**
+ * Get all of the orders comes to this restaurant
+ */
+function getRestaurantOrders(restaurantId, cb) {
 
-  DBConnection.getData('DELETE FROM cs542.contains WHERE oid = ? AND dID = ?;', [orderId, dishId], cb);
+  var query = 'SELECT ' +
+    'orders.status AS orderStatus, orders.odate AS orderDate, orders.oID AS orderId, orders.otime AS orderTime, orders.sum AS totalPrice, ' +
+    'dish.dname AS dishName, dish.price AS dishPrice, ' +
+    'customer.cname AS customerName, customer.address AS customerAddress ' +
+    'FROM cs542.orders AS orders ' +
+    'INNER JOIN cs542.orderdetail AS order_detail ' +
+    'ON orders.oID = order_detail.oID ' +
+    'INNER JOIN cs542.dish AS dish ' +
+    'ON order_detail.dID = dish.dID ' +
+    'LEFT JOIN cs542.customer  AS customer ' +
+    'ON orders.cID = customer.cID ' +
+    'WHERE orders.rID = ? ;';
+
+  DBConnection.getData(query, [restaurantId], cb);
+}
+
+
+function deleteCartOrder(cid, dishId, cb) {
+
+  DBConnection.getData('DELETE FROM cart WHERE dID = ? AND cid = ? ;', [dishId, cid], cb);
 
 }
 
-exports.getAllOrders = getAllOrders;
-exports.deleteCustomerOrder = deleteCustomerOrder;
+function getCustLoginInfo(email, cb) {
+
+  DBConnection.getData('SELECT cpwd as pwd, cID as id FROM customer WHERE cmail = ?;', [email], cb);
+}
+
+function getRestaurantLoginInfo(email, cb) {
+
+  DBConnection.getData('SELECT rpwd as pwd, rid as id FROM restaurant WHERE rmail = ?;', [email], cb);
+}
+
+function getRestaurantList(cb) {
+
+  DBConnection.getData('SELECT rname as name,rzipcode as zip,type, rid FROM restaurant;', [], cb);
+}
+
+
+function getMyProfile(cid, cb) {
+
+  DBConnection.getData('SELECT cname as uname, address, cID as uid FROM customer WHERE cID = ?;', [cid], cb);
+}
+
+function getRecommendationList(cb) {
+
+  DBConnection.getData('SELECT rname as name,rzipcode as zip,type FROM restaurant WHERE rID < 5;', [], cb);
+}
+
+function getMenuForCustomer(rid, cb) {
+
+  DBConnection.getData('SELECT did, rid, dname, description, price FROM DISH WHERE rid = ?;', [rid], cb);
+}
+
+function getMyOrderHistory(cid, cb) {
+
+  var query = 'SELECT orders.oid, rname, odate, otime, sum as price, status ' +
+    'FROM orders, restaurant ' +
+    'WHERE orders.rid = RESTAURANT.rid ' +
+    'AND orders.cid = ?; ';
+
+  DBConnection.getData(query, [cid], cb);
+}
+
+function addCustomer(address, zipcode, name, pwd, email, cb) {
+
+  DBConnection.insertData('INSERT INTO Customer (cmail, cpwd, address, czipcode, cname) VALUES (?,?,?,?,?);', [email, pwd, address, zipcode, name], cb);
+}
+
+function getRestaurantMenu(rid, cb) {
+  DBConnection.getData('SELECT did, dname, description, price FROM DISH WHERE rid = ?;', [rid], cb);
+}
+
+/**
+ * Function for a customer to update the status of the order
+ */
+function updateOrderStatusCustomer(orderId, updatedStatus, cb) {
+  DBConnection.updateData('UPDATE cs542.orders SET status = ? WHERE oID = ?;', [updatedStatus, orderId], cb);
+}
+
+function addFoodtoCart(did, cid, rid, price, cb) {
+  DBConnection.insertData('INSERT INTO Cart(did,rid,price,cid) VALUE (?,?,?,?);', [did, rid, price, cid], cb);
+}
+
+function placeOrder(cid, cb) {
+  DBConnection.getData('select rid,sum(price) as sum, cid from cart where cid = ? group by rid', [cid], cb);
+}
+
+function cartToOrders(rid, sum, cid, cb) {
+
+  DBConnection.insertData("insert into orders(status,sum, otime, odate, cid, rid) value('Placed',?,current_time(),current_date(),?,?);", [sum, cid, rid], cb);
+
+}
+
+function insertOrderDetails(cid,oid,cb){
+  var query = 'select oid, did, count(cartid) as num '+
+              'from orders, cart '+
+              'where oid = ? and cart.cid = ? '+
+              'and orders.rid = cart.rid ' +
+              'group by did;';
+
+
+  DBConnection.getData(query, [oid,cid], cb);
+
+}
+
+function insertEachRowInOrderDetail(oid,did,num,cb){
+
+  DBConnection.getData('INSERT INTO orderDetail VALUE(?,?,?);',[oid,did,num],cb);
+}
+
+function emptyCart(cid,cb){
+  DBConnection.getData('DELETE FROM cart WHERE cID = ?;',[cid],cb);
+}
+
+exports.getCustomerCartOrders = getCustomerCartOrders;//ok
+exports.deleteCartOrder = deleteCartOrder;//ok
+exports.getCustLoginInfo = getCustLoginInfo;//ok
+exports.getRestaurantLoginInfo = getRestaurantLoginInfo;//ok
+exports.getRestaurantList = getRestaurantList;//ok
+exports.getMyProfile = getMyProfile;//ok
+exports.getRecommendationList = getRecommendationList;//ok
+exports.getMenuForCustomer = getMenuForCustomer;//ok
+exports.getMyOrderHistory = getMyOrderHistory;//ok
+exports.addCustomer = addCustomer;//ok
+exports.updateOrderStatusCustomer = updateOrderStatusCustomer;//ok
+exports.addFoodtoCart = addFoodtoCart;//ok
+exports.placeOrder = placeOrder;//ok
+exports.getRestaurantMenu = getRestaurantMenu;//ok
+exports.cartToOrders = cartToOrders;//ok
+exports.getRestaurantOrders = getRestaurantOrders;
+exports.insertOrderDetails = insertOrderDetails;
+exports.insertEachRowInOrderDetail = insertEachRowInOrderDetail;
+exports.emptyCart = emptyCart;

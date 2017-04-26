@@ -21,21 +21,43 @@ class Login extends React.Component {
   handleSubmit() {
     event.preventDefault();
 
-    const userEmail = this.inputUsername.value;
-    const password = this.inputPassword.value;
+    const inputEmail = this.inputUsername.value;
+    const inputPwd = this.inputPassword.value;
+    let pwdFromDB;
 
-    console.log(userEmail + '  ' + password);
+    // request email and password from table in DB
 
-    // if logged in
-    if (password == 'asd') {
-      // https://github.com/reactjs/react-router-tutorial/tree/master/lessons/12-navigating
-      this.context.router.replace('/home');
-      localStorage.setItem('userName', userEmail);
-      localStorage.setItem('type', this.state.type);
-    }
-    else {
-      this.setState({error: true});
-    }
+      $.ajax({
+        url: '/getLoginInfo',
+        type: 'post',
+        dataType: 'json',
+        data: {email: inputEmail, table: this.state.type},
+        success: function (json) {
+          console.log(json);
+          debugger;
+          pwdFromDB = json.loginInfo[0].pwd;
+          // if logged in, check the password and email account
+          if (inputPwd === pwdFromDB) {
+            // https://github.com/reactjs/react-router-tutorial/tree/master/lessons/12-navigating
+            this.context.router.replace('/home');
+            localStorage.setItem('userName', inputEmail);
+            localStorage.setItem('type', this.state.type);
+            localStorage.setItem('customerID', json.loginInfo[0].id);
+            //localStorage.setItem('restaurantID', json.loginInfo[0].rID);
+          }
+          else {
+            this.setState({error: true});
+          }
+
+        }.bind(this),
+
+        error: function (xhr, status, err) {
+          debugger;
+          console.log(xhr.responseText);
+          console.log(err);
+        }.bind(this)
+      });
+
   };
 
   handleSelect(event) {
