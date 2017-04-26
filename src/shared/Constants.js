@@ -4,15 +4,16 @@
 
 module.exports = {
   orderStatus: {
-    ORDER_CANCELLED: 'cancelled',
-    ORDER_ACCEPTED: 'accepted',
-    ORDER_PLACED: 'placed',
-    ORDER_DELIVERED: 'delivered'
+    ORDER_CANCELLED: 'Cancelled',
+    ORDER_ACCEPTED: 'Accepted',
+    ORDER_PLACED: 'Placed',
+    ORDER_DELIVERED: 'Delivered'
   },
   localStorageKeys: {},
-  CANCEL: 'cancel',
-  ACCEPTED: 'accepted',
-  DELIVERED: 'delivered',
+  CANCEL: 'Cancel',
+  ACCEPTED: 'Accepted',
+  DELIVERED: 'Delivered',
+  CONFIRMED: 'Confirmed',
   CUSTOMER: 'customer',
   RESTAURANT: 'restaurant'
 };

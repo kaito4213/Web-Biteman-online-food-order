@@ -54,7 +54,7 @@ class OrderList extends Component {
           console.log(this.state.modalState.oid);
           // if we want to delete data, we can use post
           const orderId = this.state.modalState.oid;
-          const newOrderStatus = 'cancelled';
+          const newOrderStatus = 'Cancelled';
           $.ajax({
             url: '/updateOrderStatusCustomer',
             type: 'post',
@@ -64,7 +64,7 @@ class OrderList extends Component {
               // isUpdateOrderStatusSuccess passed back from back end is a boolean
               if (json.isUpdateOrderStatusSuccess) {
                 let updatedOrderHistory = this.state.orderHistory.slice(0);
-                updatedOrderHistory[row].status = 'cancelled';
+                updatedOrderHistory[row].status = 'Cancelled';
                 this.setState({orderHistory: updatedOrderHistory});
               } else {
                 // if the code goes here, something wrong when updating the order status
@@ -86,9 +86,35 @@ class OrderList extends Component {
       // accepted, what is this?
       for (let row = 0; row < len; row++) {
         if (this.state.orderHistory[row].oid === this.state.modalState.oid) {
-          const orderHistory = this.state.orderHistory;
-          orderHistory[row].status = 'finished';
-          this.setState({orderHistory: orderHistory});
+          console.log(this.state.modalState.oid);
+          // if we want to delete data, we can use post
+          const orderId = this.state.modalState.oid;
+          const newOrderStatus = 'Finished';
+          $.ajax({
+            url: '/updateOrderStatusCustomer',
+            type: 'post',
+            dataType: 'json',
+            data: {orderId: orderId, newOrderStatus: newOrderStatus},
+            success: function (json) {
+              // isUpdateOrderStatusSuccess passed back from back end is a boolean
+              if (json.isUpdateOrderStatusSuccess) {
+                let updatedOrderHistory = this.state.orderHistory.slice(0);
+                updatedOrderHistory[row].status = 'Finished';
+                this.setState({orderHistory: updatedOrderHistory});
+              } else {
+                // if the code goes here, something wrong when updating the order status
+                // so nothing changed here, but we should let customer know. Not now =)
+              }
+
+            }.bind(this),
+            error: function (xhr, status, err) {
+              debugger;
+              // oop, something bad happened =(
+              console.log(xhr.responseText);
+              console.log(err);
+            }.bind(this)
+          });
+          break;
         }
       }
     }
@@ -121,22 +147,20 @@ class OrderList extends Component {
     // default show modal
     let isModalVisible = true;
 
-    if (orderData.status === 'placed') {
+    if (orderData.status === 'Placed') {
       orderOperation = 1;
-    } else if (orderData.status === 'accepted') {
+    } else if (orderData.status === 'Delivered') {
       orderOperation = 2;
     }
 
-    if (orderData.status === 'placed') {
+    if (orderData.status === 'Placed') {
       modalTitle = 'Are you going to cancel the order?';
       modalText = 'Your will cancel the order ' + orderId + '.';
       isModalVisible = true;
-    } else if (orderData.status === 'accepted') {
+    } else if (orderData.status === 'Delivered') {
       modalTitle = 'Are you going to confirm the order?';
       modalText = 'Your will confirm the order ' + orderId + '.';
       isModalVisible = true;
-    } else if (orderData.status === 'delivered') {
-      //Link to comment
     }
 
     this.setState({

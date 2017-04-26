@@ -45,12 +45,12 @@ function deleteCartOrder(cid, dishId, cb) {
 
 function getCustLoginInfo(email, cb) {
 
-  DBConnection.getData('SELECT cpwd as pwd, cID FROM customer WHERE cmail = ?;', [email], cb);
+  DBConnection.getData('SELECT cpwd as pwd, cID as id FROM customer WHERE cmail = ?;', [email], cb);
 }
 
 function getRestaurantLoginInfo(email, cb) {
 
-  DBConnection.getData('SELECT rpwd as pwd, rid FROM restaurant WHERE rmail = ?;', [email], cb);
+  DBConnection.getData('SELECT rpwd as pwd, rid as id FROM restaurant WHERE rmail = ?;', [email], cb);
 }
 
 function getRestaurantList(cb) {
@@ -110,7 +110,7 @@ function placeOrder(cid, cb) {
 
 function cartToOrders(rid, sum, cid, cb) {
 
-  DBConnection.insertData("insert into orders(status,sum, otime, odate, cid, rid) value('placed',?,current_time(),current_date(),?,?);", [sum, cid, rid], cb);
+  DBConnection.insertData("insert into orders(status,sum, otime, odate, cid, rid) value('Placed',?,current_time(),current_date(),?,?);", [sum, cid, rid], cb);
 
 }
 

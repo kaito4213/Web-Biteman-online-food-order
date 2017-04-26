@@ -152,6 +152,7 @@ app.post('/getRestaurantOrders', function (req, res) {
         }
 
         orderDetails.push({
+          orderId: orderData.orderId,
           dishName: orderData.dishName,
           dishPrice: orderData.dishPrice
         });

@@ -14,10 +14,8 @@ class OrderRow extends Component {
     let btnLabel = null;
     if (record.status === Constants.orderStatus.ORDER_PLACED) {
       btnLabel = Constants.CANCEL;
-    } else if (record.status === Constants.orderStatus.ORDER_ACCEPTED) {
-      btnLabel = Constants.ACCEPTED;
     } else if (record.status === Constants.orderStatus.ORDER_DELIVERED) {
-      btnLabel = Constants.DELIVERED;
+      btnLabel = Constants.CONFIRMED;
     } else {
       btnLabel = '';
     }
@@ -30,9 +28,9 @@ class OrderRow extends Component {
     return (
       <tr>
         <td>{record.oid}</td>
-        <td>{record.name}</td>
+        <td>{record.rname}</td>
         <td>{record.odate}</td>
-        <td>{record.ordertime}</td>
+        <td>{record.otime}</td>
         <td>{record.price}</td>
         <td>{record.status}</td>
         <td>{btn}</td>

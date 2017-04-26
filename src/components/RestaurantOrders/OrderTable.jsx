@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import OrderRow from './OrderRow';
 
 /**
- * Table Display all of the orders of a restaurant
+ * Table Display all of the orders
  */
 class OrderTable extends Component {
 
@@ -13,20 +13,25 @@ class OrderTable extends Component {
   render() {
     let rows = [];
     let rowNum = 1;
-    this.props.restaurantOrders.forEach((order) => {
+    this.props.orderHistory.forEach((order) => {
+      var dish=[];
+      this.props.orderDetail.forEach((detail) =>{
+        if (detail.orderId==order.orderId){
+          dish.push(detail);
+        }
+      });
       rows.push(
-        <OrderRow key={rowNum++} orderData={order} onOrderRowClick={(e) => this.props.onOrderRowClick(e)}/>
+        <OrderRow key={rowNum++} orderDetail={dish} orderData={order} onOrderRowClick={(e) => this.props.onOrderRowClick(e)}/>
       );
     });
     return (
-      <table>
+      <table className="table table-striped">
         <thead>
         <tr>
           <th>Order ID</th>
-          <th>Dish</th>
-          <th>Date</th>
+          <th>Data</th>
           <th>Time</th>
-          <th>Price</th>
+          <th>Total price</th>
           <th>Status</th>
           <th>Operation</th>
         </tr>
