@@ -19,12 +19,12 @@ class OrderTable extends Component {
       );
     });
     return (
-      <table>
+      <table className="table table-striped">
         <thead>
         <tr>
           <th>Order ID</th>
           <th>Restaurant</th>
-          <th>Data</th>
+          <th>Date</th>
           <th>Time</th>
           <th>Total price</th>
           <th>Status</th>

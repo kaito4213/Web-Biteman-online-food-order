@@ -45,12 +45,12 @@ function deleteCartOrder(cid, dishId, cb) {
 
 function getCustLoginInfo(email, cb) {
 
-  DBConnection.getData('SELECT cpwd as pwd, cID FROM customer WHERE cmail = ?;', [email], cb);
+  DBConnection.getData('SELECT cpwd as pwd, cID as id FROM customer WHERE cmail = ?;', [email], cb);
 }
 
 function getRestaurantLoginInfo(email, cb) {
 
-  DBConnection.getData('SELECT rpwd as pwd, rid FROM restaurant WHERE rmail = ?;', [email], cb);
+  DBConnection.getData('SELECT rpwd as pwd, rid as id FROM restaurant WHERE rmail = ?;', [email], cb);
 }
 
 function getRestaurantList(cb) {
@@ -108,9 +108,31 @@ function placeOrder(cid, cb) {
   DBConnection.getData('select rid,sum(price) as sum, cid from cart where cid = ? group by rid', [cid], cb);
 }
 
-function cartToOrders(key, rid, sum, cid, cb) {
-  DBConnection.insertData("insert into orders(status,sum, otime, odate, cid, rid) value('placed',?,current_time(),current_date(),?,?);", [sum, cid, rid], cb);
+function cartToOrders(rid, sum, cid, cb) {
 
+  DBConnection.insertData("insert into orders(status,sum, otime, odate, cid, rid) value('Placed',?,current_time(),current_date(),?,?);", [sum, cid, rid], cb);
+
+}
+
+function insertOrderDetails(cid,oid,cb){
+  var query = 'select oid, did, count(cartid) as num '+
+              'from orders, cart '+
+              'where oid = ? and cart.cid = ? '+
+              'and orders.rid = cart.rid ' +
+              'group by did;';
+
+
+  DBConnection.getData(query, [oid,cid], cb);
+
+}
+
+function insertEachRowInOrderDetail(oid,did,num,cb){
+
+  DBConnection.getData('INSERT INTO orderDetail VALUE(?,?,?);',[oid,did,num],cb);
+}
+
+function emptyCart(cid,cb){
+  DBConnection.getData('DELETE FROM cart WHERE cID = ?;',[cid],cb);
 }
 
 exports.getCustomerCartOrders = getCustomerCartOrders;//ok
@@ -129,3 +151,6 @@ exports.placeOrder = placeOrder;//ok
 exports.getRestaurantMenu = getRestaurantMenu;//ok
 exports.cartToOrders = cartToOrders;//ok
 exports.getRestaurantOrders = getRestaurantOrders;
+exports.insertOrderDetails = insertOrderDetails;
+exports.insertEachRowInOrderDetail = insertEachRowInOrderDetail;
+exports.emptyCart = emptyCart;

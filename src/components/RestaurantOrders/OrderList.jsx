@@ -3,7 +3,7 @@ import {Modal} from 'antd';
 import OrderTable from './OrderTable';
 
 /**
- * Component displays all of a restaurant's orders
+ * Component displays all of the orders of a customer
  *
  * A list of orders + A interactive modal
  */
@@ -11,15 +11,18 @@ class OrderList extends Component {
   constructor() {
     super();
     this.state = {
-      restaurantOrders: [],
+      orderHistory: [],
+      orderDetail:[],
       modalState: {visible: false}
     };
     this.showConfirm = this.showConfirm.bind(this);
   }
 
   componentDidMount() {
-    // get restaurant id globally
-    let restaurantId = localStorage.getItem('restaurantID');
+    // get restaurantId  globally
+    let restaurantId = localStorage.getItem('customerID');
+    debugger;
+
     // get all of the orders associated to this customer
     $.ajax({
       url: '/getRestaurantOrders',
@@ -28,8 +31,9 @@ class OrderList extends Component {
       dataType: 'json',
       success: function (json) {
         debugger;
-        let restaurantOrders = json.restaurantOrders;
-        this.setState({restaurantOrders: restaurantOrders});
+        let orderHistory = json.restaurantOrdersData.restaurantOrders;
+        let orderDetail = json.restaurantOrdersData.orderDetails;
+        this.setState({orderHistory: orderHistory,orderDetail:orderDetail});
       }.bind(this),
       error: function (xhr, status, err) {
         debugger;
@@ -43,28 +47,30 @@ class OrderList extends Component {
    * Handle events after user did some operations.
    */
   handleOk = () => {
-    let len = this.state.restaurantOrders.length;
+    let len = this.state.orderHistory.length;
 
     if (this.state.modalState.orderOperation === 1) {
       // the user wants to cancel the order
       // the status of the order should change from placed to cancelled
       for (let row = 0; row < len; row++) {
-        if (this.state.restaurantOrders[row].oid === this.state.modalState.oid) {
+        if (this.state.orderHistory[row].orderId === this.state.modalState.oid) {
           console.log(this.state.modalState.oid);
           // if we want to delete data, we can use post
           const orderId = this.state.modalState.oid;
-          const newOrderStatus = 'cancelled';
+          const newOrderStatus = 'Accepted';
+
           $.ajax({
             url: '/updateOrderStatusCustomer',
             type: 'post',
             dataType: 'json',
             data: {orderId: orderId, newOrderStatus: newOrderStatus},
             success: function (json) {
+              debugger;
               // isUpdateOrderStatusSuccess passed back from back end is a boolean
               if (json.isUpdateOrderStatusSuccess) {
-                let updatedOrderHistory = this.state.restaurantOrders.slice(0);
-                updatedOrderHistory[row].status = 'cancelled';
-                this.setState({restaurantOrders: updatedOrderHistory});
+                let updatedOrderHistory = this.state.orderHistory.slice(0);
+                updatedOrderHistory[row].orderStatus = 'Accepted';
+                this.setState({orderHistory: updatedOrderHistory});
               } else {
                 // if the code goes here, something wrong when updating the order status
                 // so nothing changed here, but we should let customer know. Not now =)
@@ -82,12 +88,38 @@ class OrderList extends Component {
         }
       }
     } else if (this.state.modalState.orderOperation === 2) {
-      // accepted, what is this?
+      // the user confirmed and finished the order
+      // the status of the order should change from confirmed to finished
       for (let row = 0; row < len; row++) {
-        if (this.state.restaurantOrders[row].oid === this.state.modalState.oid) {
-          const restaurantOrders = this.state.restaurantOrders;
-          restaurantOrders[row].status = 'finished';
-          this.setState({restaurantOrders: restaurantOrders});
+        if (this.state.orderHistory[row].orderId === this.state.modalState.oid) {
+          console.log(this.state.modalState.oid);
+          // if we want to delete data, we can use post
+          const orderId = this.state.modalState.oid;
+          const newOrderStatus = 'Delivered';
+          $.ajax({
+            url: '/updateOrderStatusCustomer',
+            type: 'post',
+            dataType: 'json',
+            data: {orderId: orderId, newOrderStatus: newOrderStatus},
+            success: function (json) {
+              // isUpdateOrderStatusSuccess passed back from back end is a boolean
+              if (json.isUpdateOrderStatusSuccess) {
+                let updatedOrderHistory = this.state.orderHistory.slice(0);
+                updatedOrderHistory[row].orderStatus = 'Delivered';
+                this.setState({orderHistory: updatedOrderHistory});
+              } else {
+                // if the code goes here, something wrong when updating the order status
+                // so nothing changed here, but we should let customer know. Not now =)
+              }
+            }.bind(this),
+            error: function (xhr, status, err) {
+              debugger;
+              // oop, something bad happened =(
+              console.log(xhr.responseText);
+              console.log(err);
+            }.bind(this)
+          });
+          break;
         }
       }
     }
@@ -114,28 +146,26 @@ class OrderList extends Component {
   showConfirm(orderData) {
     // the operation did on the order
     let orderOperation = 0;
-    let orderId = orderData.oid;
+    let orderId = orderData.orderId;
     let modalText = '';
     let modalTitle = '';
     // default show modal
     let isModalVisible = true;
 
-    if (orderData.status === 'placed') {
+    if (orderData.orderStatus === 'Placed') {
       orderOperation = 1;
-    } else if (orderData.status === 'accepted') {
+    } else if (orderData.orderStatus === 'Accepted') {
       orderOperation = 2;
     }
 
-    if (orderData.status === 'placed') {
-      modalTitle = 'Are you going to cancel the order?';
-      modalText = 'Your will cancel the order ' + orderId + '.';
-      isModalVisible = true;
-    } else if (orderData.status === 'accepted') {
+    if (orderData.orderStatus === 'Placed') {
       modalTitle = 'Are you going to confirm the order?';
       modalText = 'Your will confirm the order ' + orderId + '.';
       isModalVisible = true;
-    } else if (orderData.status === 'delivered') {
-      //Link to comment
+    } else if (orderData.orderStatus === 'Accepted') {
+      modalTitle = 'Are you going to deliver the order?';
+      modalText = 'Your will deliver the order ' + orderId + '.';
+      isModalVisible = true;
     }
 
     this.setState({
@@ -153,7 +183,7 @@ class OrderList extends Component {
   render() {
     return (
       <div>
-        <OrderTable restaurantOrders={this.state.restaurantOrders} onOrderRowClick={(e) => this.showConfirm(e)}/>
+        <OrderTable orderDetail={this.state.orderDetail} orderHistory={this.state.orderHistory} onOrderRowClick={(e) => this.showConfirm(e)}/>
         <Modal
           title={this.state.modalState.title}
           visible={this.state.modalState.visible}

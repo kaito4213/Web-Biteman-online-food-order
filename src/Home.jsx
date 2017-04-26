@@ -29,6 +29,7 @@ class Home extends Component {
     return (
       <div className="center jumbotron">
         <h1>Welcome to Biteman!</h1>
+        <div className="jiaoyan">jiaoyan</div>
         <h2>
           This is the home page for the
           <a href="http://www.nba.com"> Biteman </a>

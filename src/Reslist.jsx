@@ -34,7 +34,7 @@ class ResTable extends Component {
       rows.push(<ResRow product={product} key={product.name} onClick={(e)=>this.props.onClick(e)}/>);
     });
     return (
-      <table>
+      <table className="table table-striped">
         <thead>
         <tr>
           <th>Name</th>

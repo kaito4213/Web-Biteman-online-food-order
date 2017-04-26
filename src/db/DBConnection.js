@@ -1,6 +1,8 @@
 const mysql = require('mysql');
 
 const pool = mysql.createPool({
+  connectionLimit: 1000,
+  acquireTimeout: 100000, //30 secs
   host: 'localhost',
   user: 'root',
   password: 'mysql',

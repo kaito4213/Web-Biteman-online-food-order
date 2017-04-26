@@ -11,12 +11,11 @@ class OrderRow extends Component {
 
   render() {
     let record = this.props.orderData;
+    let detail = this.props.orderDetail;
     let btnLabel = null;
-    if (record.status === Constants.orderStatus.ORDER_PLACED) {
-      btnLabel = Constants.CANCEL;
-    } else if (record.status === Constants.orderStatus.ORDER_ACCEPTED) {
+    if (record.orderStatus === Constants.orderStatus.ORDER_PLACED) {
       btnLabel = Constants.ACCEPTED;
-    } else if (record.status === Constants.orderStatus.ORDER_DELIVERED) {
+    } else if (record.orderStatus === Constants.orderStatus.ORDER_ACCEPTED) {
       btnLabel = Constants.DELIVERED;
     } else {
       btnLabel = '';
@@ -29,15 +28,15 @@ class OrderRow extends Component {
     }
     return (
       <tr>
-        <td>{record.oid}</td>
-        <td>{record.name}</td>
-        <td>{record.odate}</td>
-        <td>{record.ordertime}</td>
-        <td>{record.price}</td>
-        <td>{record.status}</td>
+        <td>{record.orderId}</td>
+        <td>{record.orderDate}</td>
+        <td>{record.orderTime}</td>
+        <td>{record.totalPrice}</td>
+        <td>{record.orderStatus}</td>
         <td>{btn}</td>
       </tr>
     );
+
   }
 }
 
