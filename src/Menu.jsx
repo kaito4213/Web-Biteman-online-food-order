@@ -17,15 +17,12 @@ const Menu = React.createClass({
         filterable: true
       },
       {
-<<<<<<< HEAD
-        key:'thumbnail',
-        name:'Thumbnail',
-        width:100,
+        key: 'thumbnail',
+        name: 'Thumbnail',
+        width: 100,
         editable: true
       },
       {
-=======
->>>>>>> 6f0415f8ee6857e3fad8bf019b1482992e569667
         key: 'did',
         name: 'DID',
         width: 80,
@@ -61,24 +58,21 @@ const Menu = React.createClass({
       },
     ];
 
-    return {rows: this.createRows(10), filters: {}, sortColumn: null, sortDirection: null, selectedIndexes: []};
+    return {rows: this.createRows(5), filters: {}, sortColumn: null, sortDirection: null , selectedIndexes: []};
   },
 
   createRows(numberOfRows) {
-///////////////// plug data from database into 'rows' here/////////////////////
-
     let rows = [];
     for (let i = 1; i < numberOfRows; i++) {
       rows.push({
         RowNum: i,
         did: i,
         Description: ['Excellent', 'Good', 'Average', 'Bad'][Math.floor((Math.random() * 3) + 1)],
-        DName: 'Dish ' + i,
-        Price: Math.min(100, Math.round(Math.random() * 110)),
-        Category: ['Mexican', 'American', 'French', 'Chinese'][Math.floor((Math.random() * 3) + 1)],
+        DName: ['Sushi','Gyoza','Udon','Unaju','Teriyaki Chicken'][i],
+        Price: [8,6,8,12,10][i],
+        Category: ['Japanese', 'Japanese', 'Japanese', 'Japanese'][Math.floor((Math.random() * 3) + 1)],
       });
     }
-    /////////////////////////////////////////////////////////////////////////////
     return rows;
   },
   getRows() {
@@ -91,16 +85,16 @@ const Menu = React.createClass({
     let rows = this.getRows();
     return rows[rowIdx];
   },
+
   handleGridRowsUpdated({fromRow, toRow, updated}) {
+    debugger;
     let rows = this.state.rows.slice();
     for (let i = fromRow; i <= toRow; i++) {
       let rowToUpdate = rows[i];
       let updatedRow = update(rowToUpdate, {$merge: updated});
       rows[i] = updatedRow;
-      // the line above may cause inconsistency since we don't have constraints in the front-end. But it saves I/O
-      if (updated.hasOwnProperty("did")) {      // rows from database all have did, but the ones to be inserted don't
-        updated.Price = parseFloat(updated.Price);
-        if (updated.hasOwnProperty("Price")) {
+      if (updated.hasOwnProperty("did")){      // rows from database all have did, but the ones to be inserted don't
+        if(updated.hasOwnProperty("Price")) {
           updated.Price = parseFloat(updated.Price);
         }
         updated.did = rowToUpdate.did;
@@ -108,20 +102,22 @@ const Menu = React.createClass({
           updated
         );
       }
-      else {
-        InsertRows.push(updated)
-      }
+      else {InsertRows.push(updated)}
     }
-    this.setState({rows});//////////////reset state ///////////////////////
+    this.setState({rows});
   },
-  handleAddRow({newRowIndex}){
+  handleAddRow({ newRowIndex }){
+    debugger;
     let rows = this.state.rows.slice();
+    let did_list = rows.map(function(a) {return a.did;});
+    let did_new =  Math.max.apply(null, did_list)+1;
     const newRow = {
-      RowNum: rows.length + 1,
+      RowNum: rows.length+1,
+      did: did_new,
       value: newRowIndex
     };
     rows = update(rows, {$push: [newRow]});
-    this.setState({rows});
+    this.setState({ rows });
   },
   handleGridSort(sortColumn, sortDirection) {
     this.setState({sortColumn: sortColumn, sortDirection: sortDirection});
@@ -145,23 +141,35 @@ const Menu = React.createClass({
   },
   onRowsDeselected(rows) {
     let rowIndexes = rows.map(r => r.rowIdx);
-    this.setState({selectedIndexes: this.state.selectedIndexes.filter(i => rowIndexes.indexOf(i) === -1)});
+    this.setState({selectedIndexes: this.state.selectedIndexes.filter(i => rowIndexes.indexOf(i) === -1 )});
   },
   handleDeleteRow(){
     debugger;
     let rows = this.state.rows.slice();
-    let a = this.state.selectedIndexes;
-    for (let i = 0; i < a.length; i++) {
-      DeleteRows.push({did: rows[a[i]].did})
+    let a = this.state.selectedIndexes; //Indexes of selected rows
+    let todelete = [];
+    for (let i= 0; i < a.length; i++){
+      todelete.push(rows[a[i]].RowNum);
     }
-    ///////////////////////////      reset state///////////////////////
+    for (let i= 0; i < todelete.length; i++){
+      for (let k = 0; k< rows.length; k++){
+        if (rows[k].RowNum === todelete[i]){
+          rows.splice(k,1)
+        }
+      }
+    }
+    for (let k = 0; k< rows.length; k++){
+      rows[k].RowNum = k+1;
+    }
+    this.setState({selectedIndexes: []});
+    this.setState({rows});
+
   },
   render() {
     const rowText = this.state.selectedIndexes.length === 1 ? 'row' : 'rows';
-    return (
+    return  (
       <div>
         <span>{this.state.selectedIndexes.length} {rowText} selected</span>
-        <button onClick={this.handleDeleteRow}>Delete</button>
         <ReactDataGrid
           onGridSort={this.handleGridSort}
           enableCellSelect={true}
@@ -169,11 +177,11 @@ const Menu = React.createClass({
           rowGetter={this.rowGetter}
           rowsCount={this.getSize()}
           minHeight={500}
-          toolbar={<Toolbar enableFilter={true} onAddRow={this.handleAddRow} onDelRow={this.handleDeleteRow}/>}
+          toolbar ={<Toolbar enableFilter={true} onAddRow={this.handleAddRow} onDelRow = {this.handleDeleteRow}/>}
           onAddFilter={this.handleFilterChange}
           onClearFilters={this.onClearFilters}
           onGridRowsUpdated={this.handleGridRowsUpdated}
-          rowKey="RowNum"  ///////////////////////
+          rowKey="RowNum"
           rowSelection={{
             showCheckbox: true,
             enableShiftSelect: true,
@@ -183,6 +191,7 @@ const Menu = React.createClass({
               indexes: this.state.selectedIndexes
             }
           }}/>
+        <button onClick={this.handleDeleteRow}>Delete</button>
       </div>
     );
   }

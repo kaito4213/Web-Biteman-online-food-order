@@ -1,0 +1,48 @@
+.meng {
+    background: url('../images/home-bg.jpg') 50% 0 repeat-y fixed;
+    font-family: "Tahoma";
+    -webkit-background-size: cover;
+    background-size: auto;
+    background-position: inherit;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    text-align: center;
+    height: 700px;
+}
+.meng h1 {
+    font-size: 60px;
+    letter-spacing: 6px;
+    font-style: normal;
+    font-weight: bold;
+    position: inherit;
+    height: 100px;
+    color: #ffffff;
+}
+.meng h2 {
+    font-size: 20px;
+    color: #bcbcbc;
+    font-style: italic;
+    position: relative;
+}
+.meng p {
+    font-size: 20px;
+    text-align: center;
+    color: #ffffff;
+}
+
+.meng button {
+    border-radius: 3pc;
+    color: #0e77ca;
+    background: snow;
+    letter-spacing: 2px;
+    padding: 5px 20px;
+    margin-top: 10px;
+    /*transition: all 0.4s ease-in-out;*/
+    text-align: center;
+}
+.meng button:hover {
+    background: #333333;
+    color: #88c7f4;
+}

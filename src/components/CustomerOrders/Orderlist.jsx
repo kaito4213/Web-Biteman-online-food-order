@@ -54,11 +54,7 @@ class OrderList extends Component {
           console.log(this.state.modalState.oid);
           // if we want to delete data, we can use post
           const orderId = this.state.modalState.oid;
-<<<<<<< HEAD
           const newOrderStatus = 'Cancelled';
-=======
-          const newOrderStatus = 'cancelled';
->>>>>>> 6f0415f8ee6857e3fad8bf019b1482992e569667
           $.ajax({
             url: '/updateOrderStatusCustomer',
             type: 'post',
@@ -68,11 +64,8 @@ class OrderList extends Component {
               // isUpdateOrderStatusSuccess passed back from back end is a boolean
               if (json.isUpdateOrderStatusSuccess) {
                 let updatedOrderHistory = this.state.orderHistory.slice(0);
-<<<<<<< HEAD
                 updatedOrderHistory[row].status = 'Cancelled';
-=======
-                updatedOrderHistory[row].status = 'cancelled';
->>>>>>> 6f0415f8ee6857e3fad8bf019b1482992e569667
+
                 this.setState({orderHistory: updatedOrderHistory});
               } else {
                 // if the code goes here, something wrong when updating the order status
@@ -94,7 +87,6 @@ class OrderList extends Component {
       // accepted, what is this?
       for (let row = 0; row < len; row++) {
         if (this.state.orderHistory[row].oid === this.state.modalState.oid) {
-<<<<<<< HEAD
           console.log(this.state.modalState.oid);
           // if we want to delete data, we can use post
           const orderId = this.state.modalState.oid;
@@ -124,11 +116,10 @@ class OrderList extends Component {
             }.bind(this)
           });
           break;
-=======
           const orderHistory = this.state.orderHistory;
-          orderHistory[row].status = 'finished';
+          orderHistory[row].status = 'Finished';
           this.setState({orderHistory: orderHistory});
->>>>>>> 6f0415f8ee6857e3fad8bf019b1482992e569667
+
         }
       }
     }
@@ -161,7 +152,6 @@ class OrderList extends Component {
     // default show modal
     let isModalVisible = true;
 
-<<<<<<< HEAD
     if (orderData.status === 'Placed') {
       orderOperation = 1;
     } else if (orderData.status === 'Delivered') {
@@ -176,24 +166,6 @@ class OrderList extends Component {
       modalTitle = 'Are you going to confirm the order?';
       modalText = 'Your will confirm the order ' + orderId + '.';
       isModalVisible = true;
-=======
-    if (orderData.status === 'placed') {
-      orderOperation = 1;
-    } else if (orderData.status === 'accepted') {
-      orderOperation = 2;
-    }
-
-    if (orderData.status === 'placed') {
-      modalTitle = 'Are you going to cancel the order?';
-      modalText = 'Your will cancel the order ' + orderId + '.';
-      isModalVisible = true;
-    } else if (orderData.status === 'accepted') {
-      modalTitle = 'Are you going to confirm the order?';
-      modalText = 'Your will confirm the order ' + orderId + '.';
-      isModalVisible = true;
-    } else if (orderData.status === 'delivered') {
-      //Link to comment
->>>>>>> 6f0415f8ee6857e3fad8bf019b1482992e569667
     }
 
     this.setState({

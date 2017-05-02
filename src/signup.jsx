@@ -40,48 +40,63 @@ class signup extends React.Component {
     }
   };
 
+
   render() {
     return (
-      <div>
-        <h3 className="sign-up-title">Sign Up</h3>
+      <div className="container">
         <form onSubmit={this.handleSubmit.bind(this)}>
-          <div>
-            <p>Your name</p>
-            <input ref={(input) => {
-              this.inputUsername = input
-            }} type="text" required/></div>
-          <div>
-            <p>Email</p>
-            <input ref={(input) => {
-              this.inputUseremail = input
-            }} type="text" required/></div>
-          <div>
-            <p>Address</p>
-            <input ref={(input) => {
-              this.inputAddress = input
-            }} type="text" required/></div>
-          <div>
-            <p>Zip Code</p>
-            <input ref={(input) => {
-              this.inputZip = input
-            }} type="text" required/></div>
-          <div>
-            <p>Password</p>
-            <input ref={(input) => {
-              this.inputPassword1 = input
-            }} type="password" required/></div>
-          <div>
-            <p>Confirm password</p>
-            <input ref={(input) => {
-              this.inputPassword2 = input
-            }} type="password" required/></div>
-          <div>
-            <button type="submit">Sign up</button>
-          </div>
-          <div>
-            {this.state.error && (
-              <h2>Passwords should be equal!</h2>
-            )}
+          <div className="form-group row">
+            <h1>Sign up</h1>
+            <div className="form-group row">
+              <h4 className="col-sm-2 control-label">Email</h4>
+              <div className="col-sm-10">
+                <input ref={(input) => {
+                  this.inputUsername = input
+                }} type="text" required placeholder="Email" className="form-control" align="center"/>
+              </div>
+            </div>
+            <div className="form-group row">
+              <h4 className="col-sm-2 control-label">Address</h4>
+              <div className="col-sm-10">
+                <input ref={(input) => {
+                  this.inputAddress = input
+                }} type="text" required placeholder="Address" className="form-control"/>
+              </div>
+            </div>
+            <div className="form-group row">
+              <h4 className="col-sm-2 control-label">Zip Code</h4>
+              <div className="col-sm-10">
+                <input ref={(input) => {
+                  this.inputZip = input
+                }} type="text" required placeholder="Zip Code" className="form-control"/>
+              </div>
+            </div>
+            <div className="form-group row">
+              <h4 className="col-sm-2 control-label">Password</h4>
+              <div className="col-sm-10">
+                <input ref={(input) => {
+                  this.inputPassword1 = input
+                }} type="password" required placeholder="Password" className="form-control"/>
+              </div>
+            </div>
+            <div className="form-group row">
+              <h4 className="col-sm-2 control-label">Confirm Password</h4>
+              <div className="col-sm-10">
+                <input ref={(input) => {
+                  this.inputPassword2 = input
+                }} type="password" required placeholder="Confirm Password" className="form-control"/>
+              </div>
+            </div>
+            <div className="form-group row">
+              <div className="offset-sm-2 col-sm-10">
+                <button type="submit" className="btn btn-primary">Sign up</button>
+              </div>
+            </div>
+            <div>
+              {this.state.error && (
+                <h2>Passwords should be equal!</h2>
+              )}
+            </div>
           </div>
         </form>
       </div>
