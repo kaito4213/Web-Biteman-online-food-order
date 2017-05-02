@@ -5,7 +5,7 @@ const pool = mysql.createPool({
   acquireTimeout: 100000, //30 secs
   host: 'localhost',
   user: 'root',
-  password: 'susie19910401',
+  password: 'mysql',
   database: 'cs542',
   port: 3306
 });

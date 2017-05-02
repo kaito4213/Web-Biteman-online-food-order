@@ -27,36 +27,36 @@ class Login extends React.Component {
 
     // request email and password from table in DB
 
-      $.ajax({
-        url: '/getLoginInfo',
-        type: 'post',
-        dataType: 'json',
-        data: {email: inputEmail, table: this.state.type},
-        success: function (json) {
-          console.log(json);
-          debugger;
-          pwdFromDB = json.loginInfo[0].pwd;
-          // if logged in, check the password and email account
-          if (inputPwd === pwdFromDB) {
-            // https://github.com/reactjs/react-router-tutorial/tree/master/lessons/12-navigating
-            this.context.router.replace('/home');
-            localStorage.setItem('userName', inputEmail);
-            localStorage.setItem('type', this.state.type);
-            localStorage.setItem('customerID', json.loginInfo[0].id);
-            //localStorage.setItem('restaurantID', json.loginInfo[0].rID);
-          }
-          else {
-            this.setState({error: true});
-          }
+    $.ajax({
+      url: '/getLoginInfo',
+      type: 'post',
+      dataType: 'json',
+      data: {email: inputEmail, table: this.state.type},
+      success: function (json) {
+        console.log(json);
+        debugger;
+        pwdFromDB = json.loginInfo[0].pwd;
+        // if logged in, check the password and email account
+        if (inputPwd === pwdFromDB) {
+          // https://github.com/reactjs/react-router-tutorial/tree/master/lessons/12-navigating
+          this.context.router.replace('/home');
+          localStorage.setItem('userName', inputEmail);
+          localStorage.setItem('type', this.state.type);
+          localStorage.setItem('customerID', json.loginInfo[0].id);
+          //localStorage.setItem('restaurantID', json.loginInfo[0].rID);
+        }
+        else {
+          this.setState({error: true});
+        }
 
-        }.bind(this),
+      }.bind(this),
 
-        error: function (xhr, status, err) {
-          debugger;
-          console.log(xhr.responseText);
-          console.log(err);
-        }.bind(this)
-      });
+      error: function (xhr, status, err) {
+        debugger;
+        console.log(xhr.responseText);
+        console.log(err);
+      }.bind(this)
+    });
 
   };
 
@@ -66,22 +66,26 @@ class Login extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="form-group">
         <form onSubmit={this.handleSubmit.bind(this)}>
-          <h2>Log In</h2>
+          <p>Log In</p>
           <div><select value={this.state.type} onChange={this.handleSelect.bind(this)}>
             <option value='customer'>Customer</option>
-            <option value='restuarant'>Restuarant</option>
+            <option value='restaurant'>Restaurant</option>
           </select></div>
-          <div><input ref={(input) => {
-            this.inputUsername = input
-          }} type="text" placeholder="Email Address"/></div>
-          <div><input ref={(input) => {
-            this.inputPassword = input
-          }} type="password" placeholder="Password" required/></div>
+          <div>
+            <input ref={(input) => {
+              this.inputUsername = input
+            }} type="text" placeholder="Email Address"/>
+          </div>
+          <div>
+            <input ref={(input) => {
+              this.inputPassword = input
+            }} type="password" placeholder="Password" required/>
+          </div>
           <div><input type="checkbox"/>Remember me</div>
           <div>
-            <button type="submit">Login</button>
+            <button type="submit" className="btn btn-default">Login</button>
           </div>
           <div>
             {this.state.error && (
@@ -100,5 +104,3 @@ Login.contextTypes = {
 };
 
 export default Login;
-
-

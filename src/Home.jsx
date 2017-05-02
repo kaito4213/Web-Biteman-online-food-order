@@ -15,9 +15,10 @@ class Home extends Component {
   render() {
     let content = null;
     if (!localStorage.getItem('userName')) {
-      content = <div><Login/>
-        <button onClick={this.handleClick.bind(this)} type="button">sign up now</button>
-      </div>
+      content =
+        <div><Login/>
+          <button onClick={this.handleClick.bind(this)} type="meng button">SIGN UP NOW!</button>
+        </div>
     } else {
       let type = localStorage.getItem('type');
       if (type == 'customer') {
@@ -27,13 +28,11 @@ class Home extends Component {
       }
     }
     return (
-      <div className="center jumbotron">
-        <h1>Welcome to Biteman!</h1>
-        <div className="jiaoyan">jiaoyan</div>
+      <div className="meng">
+        <h1 className="meng h1">     </h1>
+        <h1 className="meng h1">Welcome to Biteman!</h1>
         <h2>
-          This is the home page for the
-          <a href="http://www.nba.com"> Biteman </a>
-          sample application.
+          This is the home page for the Biteman sample application.
         </h2>
         {content}
       </div>
@@ -46,4 +45,3 @@ Home.contextTypes = {
 };
 
 export default Home;
-
