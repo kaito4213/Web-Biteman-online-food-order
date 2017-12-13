@@ -16,14 +16,16 @@ We use REST API to design the web application, and use REACT in front-end, NODE 
 
 
 ## How to start:
+Notice: Do not install any dependencies in this project for now unless you can make sure you will not install duplicated pakages and will not cause package conflicts. If you really want to start something for testing you can start a new project yourself!
 1. Go to the project directory, run ```npm install```
 2. Start the project, run ```npm start```
 3. Go to browser and visit ```localhost:3000```
-
-Notice: Do not install any dependencies in this project for now unless you can make sure you will not install duplicated pakages and will not cause package conflicts. If you really want to start something for testing you can start a new project yourself!
 ---
 
 ## Validation
+We design the application in following diagram
+![desgin](https://github.com/kaito4213/biteman-online-food-order/blob/master/util/img/design.png)
+
 
 ## Reference
 Reactjs: 
